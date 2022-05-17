@@ -1,0 +1,198 @@
+<html>
+<title>Drawing</title>
+<div align="center" id="main">
+    <button style="background-color:red;" class="button" onclick="changeColor(this.id)" id="Red"></button>
+    <button style="background-color:orange;" class="button" onclick="changeColor(this.id)" id="Orange"></button>
+    <button style="background-color:yellow;" class="button" onclick="changeColor(this.id)" id="Yellow"></button>
+    <button style="background-color:green;" class="button" onclick="changeColor(this.id)" id="Green"></button>
+    <button style="background-color:blue;" class="button" onclick="changeColor(this.id)" id="Blue"></button>
+    <button style="background-color:pink;" class="button" onclick="changeColor(this.id)" id="Pink"></button>
+    <button style="background-color:purple;" class="button" onclick="changeColor(this.id)" id="Purple"></button>
+    <button style="background-color:#964B00;" class="button" onclick="changeColor(this.id)" id="#964B00"></button>
+    <button style="background-color:#fbe5ba;" class="button" onclick="changeColor(this.id)" id="#fbe5ba"></button>
+    <button style="background-color:#D2B48C;" class="button" onclick="changeColor(this.id)" id="#D2B48C"></button>
+    <button style="background-color:black;" class="button" onclick="changeColor(this.id)" id="Black"></button>
+    <button class="button" onclick="paintsize('1')" id="paintsmall"></button>
+    <button class="button" onclick="paintsize('2')" id="paintmedium"></button>
+    <button class="button" onclick="paintsize('3')" id="paintlarge"></button>
+    <button class="button" onclick="changeColor(this.id)" id="white"></button>
+    <button class="button" onclick="clearColors()" id="clear"></button>
+    <button class="button" onclick="gridactivation('on')" id="gridactivate"></button>
+    <p id="test">To activate coloring, click once. To de-activate coloring, click again. (When your cursor leaves the canvas, coloring stops to prevent accidents.)</p>
+    <form id="customcolor">
+        <label for="customcolorinput">Hex Code:</label>
+        <input id="customcolorinput" type="text">
+        <button id="customcolorbutton" type="button" onclick="getcustomcolor()">Submit</button>
+    </form>
+    <p id="currentbrush">Brush Size: <div style="height:40px;width:40px;" id="currentbrushsize"> </div></p>
+    <p id="currentcolor">Current Color: <div style="height:40px;width:40px;" id="currentcolorspan"> </div></p>
+    <br>
+    <div onmouseleave="mouseleave()" id="table">
+        <table style="border-collapse:collapse" id="grid">
+        </table>
+    </div>
+</div>
+</html>
+<style>
+    #paintsmall {
+        background-size:100%;
+        background-image: url("https://codehs.com/uploads/e2224f7dc6ae32c99ea3fc22df4ee2d8")
+    }
+    #paintmedium {
+        background-size:100%;
+        background-image: url("https://codehs.com/uploads/32e0345ed3d1429ae798afe3197e0969")
+    }
+    #paintlarge {
+        background-size:100%;
+        background-image: url("https://codehs.com/uploads/8a64318da4ecf8e2bdece0079cd988dd")
+    }
+    #currentbrushsize {
+        background-size:100%;
+        background-image: url("https://codehs.com/uploads/e2224f7dc6ae32c99ea3fc22df4ee2d8")
+    }
+    #gridactivate {
+        background-size:100%;
+        background-image: url("https://codehs.com/uploads/706faf121c61c4de7719703bca62eb1d");
+    }
+    #clear {
+        background-size:100%;
+        background-image: url("https://codehs.com/uploads/af6430f7fbc5ec31b37ee67a8853933c")
+    }
+    .tr {
+        width:100%;
+        height:100%;
+    }
+    #grid {
+        border:1px solid black
+    }
+    .button {
+        height:40px;
+        width:40px;
+        border:1px solid black
+    }
+    #currentcolorspan {
+        height:40px;
+        width:40px;
+        border:1px solid black
+    }
+    #white {
+        background-size: 100%;
+        background-image: url("https://codehs.com/uploads/6d993e6663e15a366db20474ca4e2dc6")
+    }
+</style>
+<script>
+    var row = "";
+    var y = 100;
+    var x = 100;
+    var grid = document.getElementById('grid');
+    var gridstatus = ""
+    var coloring = false;
+    var color = "white";
+    var brushsize = "small";
+    var testtext = "";
+    function paintsize(newsize) {
+        brushsize = newsize;
+        console.log(typeof brushsize)
+        var imagekey = {1:'https://codehs.com/uploads/e2224f7dc6ae32c99ea3fc22df4ee2d8',2:'https://codehs.com/uploads/32e0345ed3d1429ae798afe3197e0969',3:'https://codehs.com/uploads/8a64318da4ecf8e2bdece0079cd988dd'}
+        document.getElementById('currentbrushsize').style.backgroundImage = "url("+imagekey[brushsize]+")";
+        document.getElementById('currentbrushsize').style.backgroundSize = "100%";
+    }
+    function getcustomcolor() {
+        color = document.getElementById('customcolorinput').value;
+        document.getElementById('currentcolorspan').style.backgroundColor = color
+    }
+    function mouseleave() {
+        coloring = false;
+    }
+    function changeColor(id) {
+        color = id;
+        document.getElementById('currentcolorspan').style.backgroundColor = color;
+    }
+    function colorChanger(cell,size) {
+        coloring = (coloring)?false:true;
+    }
+    function dragcolorChanger(cell,status,size){
+        if (status == true) {
+            cellclass = cell.className;
+            cellclass = cellclass.split(" ");
+            newcellclass = cellclass[1]
+            newcellclass = newcellclass.split("_")
+            var cellid = parseInt(cell.id);
+            number = parseInt(newcellclass[1]);
+            // Small and bigger
+            grid.rows[number-1].cells[cellid].style.backgroundColor = color;
+            if ( size>1 ) {
+                grid.rows[number-2].cells[cellid].style.backgroundColor = color;
+                grid.rows[number-2].cells[cellid+1].style.backgroundColor = color;
+                grid.rows[number-1].cells[cellid+1].style.backgroundColor = color;
+                console.log('>1 size is: '+size);
+            }
+            if ( size>2 ) {
+                grid.rows[number-2].cells[cellid+2].style.backgroundColor = color;
+                grid.rows[number-2].cells[cellid+3].style.backgroundColor = color;
+                grid.rows[number-1].cells[cellid+2].style.backgroundColor = color;
+                grid.rows[number-1].cells[cellid+3].style.backgroundColor = color;
+                grid.rows[number].cells[cellid].style.backgroundColor = color;
+                grid.rows[number].cells[cellid+1].style.backgroundColor = color;
+                grid.rows[number].cells[cellid+2].style.backgroundColor = color;
+                grid.rows[number].cells[cellid+3].style.backgroundColor = color;
+                grid.rows[number+1].cells[cellid].style.backgroundColor = color;
+                grid.rows[number+1].cells[cellid+2].style.backgroundColor = color;
+                grid.rows[number+1].cells[cellid+1].style.backgroundColor = color;
+                grid.rows[number+1].cells[cellid+3].style.backgroundColor = color;
+
+                console.log('>2 size is: '+size);
+            }
+        }
+    }
+    function clearColors() {
+        var cells = document.getElementsByClassName("cell")
+        for (var i=0; i < cells.length; i++) {
+            cells[i].style.backgroundColor = "white";
+        }
+    }
+    for (var rowi=0; rowi < y; rowi++) {
+        var row = grid.insertRow(rowi);
+        for (var celli=0; celli < x; celli++) {
+            var cell = row.insertCell(celli);
+            cell.style.height = "10px";
+            cell.style.width = "10px";
+            cell.onclick = function() {colorChanger(this,brushsize)};
+            cell.onmouseover = function() {dragcolorChanger(this,coloring,brushsize)};
+            cell.setAttribute("id",celli);
+            cell.classList.add("cell");
+            cell.classList.add("inrow_"+rowi);
+        }
+    }
+    function gridactivation(status) {
+        for (var rowi=0;rowi < y; rowi++) {
+            var row = grid.rows[rowi];
+            for (var celli=0; celli < x; celli++) {
+                var cell = row.cells[celli];
+                if (status == "on") {
+                    cell.style.border = "1px solid black";
+                } else if (status == "off") {
+                    cell.style.border = "none";
+                }
+            }
+        }
+        if (status == "on") {
+            document.getElementById('gridactivate').onclick = function() {gridactivation('off')}
+        } else if (status = "off") {
+            document.getElementById('gridactivate').onclick = function() {gridactivation('on')}
+        }
+    }
+    function gridcheck(status) {
+        if (status == "on") {
+            gridstatus = "on";
+            document.getElementById('gridbutton').onclick = function() {gridcheck("off")};
+        } else if (status == "off") {
+            gridstatus = "off";
+            document.getElementById('gridbutton').onclick = function() {gridcheck("on")};
+        }
+        document.getElementById("gridstatustext").textContent = "Grid: "+gridstatus
+    }
+    function text(id,text) {
+        document.getElementById(id).innerHTML = text;
+    }
+</script>
