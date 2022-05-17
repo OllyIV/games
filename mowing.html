@@ -10,8 +10,8 @@
     <br>
     <button class="btn" onclick="openmodal('upgrades')">Upgrades</button>
     <button class="btn" onclick="openmodal('perks')">Perks</button>
-    <button class="btn" onclick="openmodal('clearprompt')">Clear Data</button>
-    <button class="btn" onclick="openmodal('helpmodal')">Help</button>
+    <button class="btn" onclick="openmodal('prestigemodal')">Prestige</button>
+    <button class="btn" onclick="openmodal('helpmodal')">Help & Stats</button>
     <br>
     <br>
     <div id="mainmodal">
@@ -88,26 +88,54 @@
             <br>
             <br>
         </div>
-        <div align="center" id="helpmodal" class="modal" style="width:50%;height:30%;">
+        <div align="center" id="helpmodal" class="modal" style="width:50%;height:70%;">
             <div class="modaltop">
                 <h1 class="modalh1" align="center" id="helph1">Help</h1>
                 <button class="closebtn" onclick="closemodal('helpmodal')">X</button>
             </div>
             <br>
             <div>
-                <p style="color:#00aaff;font-size:150%;">To play, you can use the Left/Right arrows or A/D. You mow the grass, earn grass, and spend the grass to buy upgrades to get even more grass. When you level up, you earn a perk point. You can spend these in the Perks section. If you want to, you can clear your data to start over.</p>
+                <p style="color:#00aaff;font-size:125%;"><strong>Instructions:</strong> <br>To play, you can use the Left/Right arrows or A/D. You mow the grass, earn grass, and spend the grass to buy upgrades to get even more grass. When you level up, you earn a perk point. You can spend these in the Perks section. If you want to, you can clear your data to start over.</p>
+                <br>
+                <div style="background-color:#00aaff;width:50%;">
+                    <h2>Stats:</h2>
+                    <p class="stattext" id="grassvaluestat">Grass Value: 5</p>
+                    <p class="stattext" id="grasslimitstat">Grass Limit: 5</p>
+                    <p class="stattext" id="grassspawnstat">Grass Spawn Time (In milliseconds): 5000</p>
+                    <p class="stattext" id="expgainstat">Exp Gain: 3</p>
+                    <p class="stattext" id="mowerspeedstat">Mower Speed: 3</p>
+                    <br>
+                </div>
+                <br>
+                <button class="btn" onclick="cleardata()">Clear Data</button>
+            </div>
+        </div>
+        <div align="center" id="prestigemodal" class="modal" style="width:50%;height:50%;">
+            <div class="modaltop">
+                <h1 class="modalh1" align="center" id="prestigeh1">Prestige</h1>
+                <button class="closebtn" onclick="closemodal('prestigemodal')">X</button>
+            </div>
+            <br>
+            <div>
+                <p style="color:#00aaff;font-size:125%;">To Prestige, you must be at least level 100.<br> Once you Prestige, you will gain more Perk Points and Grass in your next life.<br>
+                    If you are ready to Prestige, click below.</p>
+                <br>
+                <button onclick="prestige()" class="btn">Prestige</button>
             </div>
         </div>
     </div>
 </section>
 <hr style="margin:0;background-color:darkblue;height:1%;border:1px solid darkblue">
-<canvas id="canvas" width="1500" height="1000"></canvas>
+<canvas id="canvas" width="1500" height="500"></canvas>
 </html>
 {literal}
 <style>
+    .stattext {
+        font-size:125%;
+    }
     #canvas {
         width:100%;
-        height:80%;
+        height:50%;
     }
     #main {
         text-align:center;
@@ -263,7 +291,7 @@
     if (localStorage.getItem('mowerstats')) {
         var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
     } else {
-        var mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':1000,'grasslimit':100,'grassspawn':100,'expgain':100,'mowerspeed':10}}
+        var mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':1000,'grasslimit':100,'grassspawn':100,'expgain':100,'mowerspeed':10},'prestige':{'prestigeamount':0,'prestigemultiplier':0}}
         localStorage.setItem('mowerstats',JSON.stringify(mowerstats))
     }
     $("#grass").text("Grass: "+mowerstats.grass)
@@ -334,6 +362,13 @@
             grassdictinterval = setInterval(generategrass,mowerstats.grassspawn)
         }
     }
+    var statupdater = setInterval(function() {
+        $("#grassvaluestat").text("Grass Value: "+mowerstats.grassvalue.toFixed(2)+"")
+        $("#grassspawnstat").text("Grass Spawn Time: "+ parseFloat(mowerstats.grassspawn / 1000).toFixed(3)+"s")
+        $("#grasslimitstat").text("Grass Limit: "+mowerstats.grasslimit+"")
+        $("#expgainstat").text("Exp Gain: "+mowerstats.expgain.toFixed(2)+"")
+        $("#mowerspeedstat").text("Mower Speed: "+parseInt(mowerstats.mowerspeed + 2)+ "")
+    },1)
     function openmodal(id) {
         $("#mainmodal").css('display',"inline")
         $("#mainmodal").css('z-index','100')
@@ -347,8 +382,19 @@
         $("#"+id).css('display','none')
     }
     function cleardata() {
+        player.position.y = 500
         localStorage.clear()
         window.location.reload()
+    }
+    function prestige() {
+        //mowerstats.prestige.prestigeamount += 1
+        //mowerstats.prestige.prestigemultiplier += mowerstats.level / 2
+        if (mowerstats.level === 100) {
+            let tempprestigemultiplier = mowerstats.level / 2
+            let tempprestiges = mowerstats.prestige.prestigeamount + 1
+            mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':1000,'grasslimit':100,'grassspawn':100,'expgain':100,'mowerspeed':10},'prestige':{'prestigeamount':tempprestiges,'prestigemultiplier':tempprestigemultiplier}}
+            localStorage.setItem('mowerstats',JSON.stringify(mowerstats))
+        }
     }
     c.fillRect(0,0,canvas.width,canvas.height)
     class Grass {
@@ -460,7 +506,7 @@
     }
     let player = new Sprite({
         position: {
-            x: 1000,
+            x: canvas.width/2 - 50,
             y: canvas.height/2,
         },
         velocity: {
@@ -473,12 +519,12 @@
     var grassdictinterval = setInterval(generategrass,mowerstats.grassspawn)
     function generategrass() {
         if (currentgrass < mowerstats.grasslimit) {
-            var randomx = Math.ceil(Math.random() * canvas.width - 100)
+            var randomx = Math.ceil(Math.random() * canvas.width)
             var randomheight = -1 * (Math.ceil((Math.random() * 200) + 100))
             grassdict[grassdictcounter] = new Grass({
                 position: {
                     x:randomx,
-                    y:(canvas.height-100)
+                    y:(canvas.height - canvas.height/10)
                 },
                 maxheight: randomheight,
             })
