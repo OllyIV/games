@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+<section id="main">
+    <title>Mowing</title>
+    <h1 class="h1" style="margin:0">Mow the Lawn</h1>
+    <p id="grass">Grass: 0</p>
+    <p id="level">Level: 0</p>
+    <progress id="exp" value="0" max="1"> 10% </progress>
+    <p id='test'></p>
+    <br>
+    <button class="btn" onclick="openmodal('upgrades')">Upgrades</button>
+    <button class="btn" onclick="openmodal('perks')">Perks</button>
+    <button class="btn" onclick="openmodal('clearprompt')">Clear Data</button>
+    <br>
+    <br>
+    <div id="mainmodal">
+        <div align="center" id="upgrades" class="modal">
+            <button class="closebtn" onclick="closemodal('upgrades')">X</button>
+            <br>
+            <table class="modaltable">
+                <tr>
+                    <td><label class="label" for="grassvalue">Grass Value</label></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade" id="grassvalue" onclick="upgrade('grassvalue',5,1.2)"></td>
+                </tr>
+                <tr>
+                    <td><label class="label" for="grasslimit">Grass Limit</label></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade" id="grasslimit" onclick="upgrade('grasslimit',1,1.3)"></td>
+                </tr>
+                <tr>
+                    <td><label class="label" for="grassspawn">Grass Spawn Time</label></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade" id="grassspawn" onclick="upgrade('grassspawn',0.9,1.4)"></td>
+                </tr>
+                <tr>
+                    <td><label class="label" for="expgain">Exp Gain</label></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade" id="expgain" onclick="upgrade('expgain',3,1.5)"></td>
+                </tr>
+                <tr>
+                    <td><label class="label" for="mowerspeed">Increase Mower Speed by 1</label></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade (10000)" id="mowerspeed" onclick="upgrade('mowerspeed',1,2)"></td>
+                </tr>
+            </table>
+            <br>
+        </div>
+        <div align="center" id="perks" class="modal">
+            <div class="modaltop">
+                <h1 class="modalh1" align="center" id="perkpoints">Perk Points: 0</h1>
+                <button class="closebtn" onclick="closemodal('perks')">X</button>
+            </div>
+            <br>
+            <table class="modaltable">
+                <tr>
+                    <td><label class="label" for="grassvalueperk">Grass Value by 10%</label></td>
+                    <td><p class="leveltext" id="grassvalueperklevel">Level: 0</p></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade (1 perk point)" id="grassvalueperk" onclick="perk('grassvalue',1.1,1)"></td>
+                </tr>
+                <tr>
+                    <td><label class="label" for="grasslimitperk">Grass Limit by 10</label></td>
+                    <td><p class="leveltext" id="grasslimitperklevel">Level: 0</p></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade (1 perk point)" id="grasslimitperk" onclick="perk('grasslimit',10,1)"></td>
+                </tr>
+                <tr>
+                    <td><label class="label" for="grassspawnperk">Decrease Grass Spawn Time by 30%</label></td>
+                    <td><p class="leveltext" id="grassspawnperklevel">Level: 0</p></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade (1 perk point)" id="grassspawnperk" onclick="perk('grassspawn',0.7,1)"></td>
+                </tr>
+                <tr>
+                    <td><label class="label" for="expgainperk">Increase Exp Gain by 10%</label></td>
+                    <td><p class="leveltext" id="expgainperklevel">Level: 0</p></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade (1 perk point)" id="expgainperk" onclick="perk('expgain',1.1,1)"></td>
+                </tr>
+                <tr>
+                    <td><label class="label" for="mowerspeedperk">Increase Mower Speed by 25%</label></td>
+                    <td><p class="leveltext" id="mowerspeedperklevel">Level: 0</p></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade (10 perk points)" id="mowerspeedperk" onclick="perk('mowerspeed',1.25,10)"></td>
+                </tr>
+            </table>
+            <br>
+        </div>
+        <div align="center" id="clearprompt" style="width:20%;height:20%" class="modal">
+            <div class="modaltop">
+                <h1 class="modalh1" align="center" style="margin:0" id="cleardata">Clear Data?</h1>
+                <br>
+                <br>
+                <button class="btn" style="height:20%;background-color:green;" onclick="cleardata()">Yes</button>
+                <button class="btn" style="height:20%;background-color:red;" onclick="closemodal('clearprompt')">No</button>
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+</section>
+<hr style="margin:0;background-color:darkblue;height:1%;border:1px solid darkblue">
+<canvas id="canvas" width="1500" height="1000"></canvas>
+</html>
+{literal}
+    <style>
+        #canvas {
+            width:100%;
+            height:80%;
+        }
+        #main {
+            text-align:center;
+            background-color:#87ceeb;
+        }
+        html {
+            font-family: Arial;
+            color:white;
+        }
+        .h1 {
+            font-size:175%;
+        }
+        p {
+            margin:0;
+            font-size:80%;
+        }
+        .modaltable {
+            border-spacing:10px;
+        }
+        .modalp > *{
+            display:inline;
+        }
+        .leveltext {
+            text-align:center;
+            margin:0;
+            font-family: Arial;
+            font-size:150%;
+            width:100%;
+            background-color:#00aaff;
+            color:white;
+            border-radius:12px;
+            padding:2%;
+        }
+        .closebtn {
+            font-size:20px;
+            top:0px;
+            right:0px;
+            float:right;
+            transform: translate(65%,-50%);
+            text-align:center;
+            border-radius:12px;
+            border: 1px solid #00aaff;
+            background-color: #00aaff;
+            color:white;
+            width:10%;
+            height:20%;
+            transition: background-color .5s
+        }
+        .closebtn:hover {
+            background-color: #4fc8ff
+        }
+        .modaltop > * {
+            display:inline;;
+        }
+        .modalh1 {
+            font-family: Arial;
+            margin-left:10%;
+            color:#00aaff;
+        }
+        .modal {
+            color:white;
+            border-radius:12px;
+            font-size:20px;
+            display:none;
+            position:fixed;
+            left: 50%;
+            top:10%;
+            transform: translate(-50%, 0);
+            padding-right:.5%;
+            padding-left:.5%;
+            /*width:25%;
+            height:20%;*/
+            z-index:-1;
+            background-color:#DEDEDE;
+        }
+        #level {
+            font-size:150%;
+        }
+        #mainmodal {
+            display:none;
+            position:fixed;
+            top:0%;
+            z-index:-1;
+            right:0%;
+            left:0%;
+            width:100%;
+            height:100%;
+            background-color:rgba(0,0,0,0.3);
+        }
+        div {
+            z-index:10;
+        }
+        .btn {
+            font-size:150%;
+            text-align:center;
+            border-radius:4px;
+            border: 1px solid #00aaff;
+            background-color: #00aaff;
+            color:white;
+            width:20%;
+            height:5%;
+            transition: background-color .5s
+        }
+        .btn:hover {
+            background-color: #4fc8ff
+        }
+        .modalbtn {
+            font-size:150%;
+            text-align:left;
+            border-radius:4px;
+            border: 1px solid #00aaff;
+            background-color: #00aaff;
+            color:white;
+            width:100%;
+            height:5%;
+            transition: background-color .5s
+        }
+        .modalbtn:hover {
+            background-color: #4fc8ff
+        }
+        .label {
+            font-family: Arial;
+            font-size:150%;
+            color:#00aaff;
+        }
+        #grass {
+            font-size:30px
+        }
+        #maindiv {
+            height:100%;
+            width:100%;
+            text-align:center;
+        }
+        #lawn {
+            width:80%;
+            height:90%;
+            border: 3px solid green;
+            cursor: pointer;
+        }
+        #top {
+            font-family: Arial;
+            font-size:20px;
+        }
+    </style>
+{/literal}
+{literal}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        const canvas = document.querySelector('canvas')
+        const c = canvas.getContext("2d")
+        const gravity = .5
+        let lastkey;
+        if (localStorage.getItem('mowerstats')) {
+            var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
+        } else {
+            var mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':1000,'grasslimit':100,'grassspawn':100,'expgain':100,'mowerspeed':10}}
+            localStorage.setItem('mowerstats',JSON.stringify(mowerstats))
+        }
+        $("#grass").text("Grass: "+mowerstats.grass)
+        $("#grassvalue").val("Upgrade ("+mowerstats.grassvaluecost+" Grass)")
+        $("#grassspawn").val("Upgrade ("+mowerstats.grassspawncost+" Grass)")
+        $("#grasslimit").val("Upgrade ("+mowerstats.grasslimitcost+" Grass)")
+        $("#expgain").val("Upgrade ("+mowerstats.expgaincost+" Grass)")
+        $("#mowerspeed").val("Upgrade ("+mowerstats.mowerspeedcost+" Grass)")
+        $("#exp").val(mowerstats.exp / mowerstats.neededexp)
+        $("#level").text("Level: "+mowerstats.level)
+        $("#perkpoints").text("Perk Points: "+mowerstats.perkpoints)
+        for (var i in mowerstats.perklevels) {
+            $("#"+i+"perklevel").text("Level: "+mowerstats.perklevels[i])
+        }
+        let keys = {
+            a: {
+                pressed:false
+            },
+            d: {
+                pressed:false
+            },
+            w: {
+                pressed:false
+            }
+        }
+        let currentgrass = 0
+        function upgrade(subject,subjectmultiplier,costmultiplier) {
+            mowerstats.grass = parseFloat(mowerstats.grass)
+            if (mowerstats.grass >= parseFloat(mowerstats[subject+"cost"])) {
+                var strsubjectmultiplier = "" + subjectmultiplier
+                if (strsubjectmultiplier.includes(".")) {
+                    var operation = "*"
+                } else {
+                    var operation = "+"
+                }
+                if (operation == "+") {
+                    mowerstats[subject] += subjectmultiplier
+                } else if (operation == "*") {
+                    mowerstats[subject] *= subjectmultiplier
+                }
+                mowerstats.grass -= mowerstats[subject+"cost"]
+                mowerstats.grass = mowerstats.grass.toFixed(2)
+                mowerstats.grass = parseFloat(mowerstats.grass)
+                $("#grass").text("Grass: " + mowerstats.grass)
+                mowerstats[subject + "cost"] *= costmultiplier
+                mowerstats[subject + "cost"] = mowerstats[subject + "cost"].toFixed(2)
+                $("#"+subject).val("Upgrade ("+mowerstats[subject+"cost"]+" Grass)")
+                localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
+                clearInterval(grassdictinterval)
+                grassdictinterval = setInterval(generategrass,mowerstats.grassspawn)
+            }
+        }
+        function perk(subject,subjectmultiplier,perkcost) {
+            if (mowerstats.perkpoints >= perkcost && mowerstats.perklevels[subject] < mowerstats.perkmax[subject]) {
+                mowerstats[subject] /= mowerstats.perkmultipliers[subject]
+                mowerstats.perkmultipliers[subject] *= subjectmultiplier;
+                mowerstats[subject] *= mowerstats.perkmultipliers[subject]
+                document.getElementById('test').innerHTML = "Subject: "+subject+" | Subject Multi: "+mowerstats.perkmultipliers[subject] + " | Actual Subject Value: "+mowerstats[subject]
+                mowerstats.perkpoints -= perkcost;
+                mowerstats.perklevels[subject] += 1
+                $("#perkpoints").text("Perk Points: "+mowerstats.perkpoints)
+                if (mowerstats.perklevels[subject] >= mowerstats.perkmax[subject]) {
+                    $("#"+subject+"perklevel").text("Level: "+mowerstats.perklevels[subject]+" (Max)")
+                } else {
+                    $("#"+subject+"perklevel").text("Level: "+mowerstats.perklevels[subject])
+                }
+                localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
+                clearInterval(grassdictinterval)
+                grassdictinterval = setInterval(generategrass,mowerstats.grassspawn)
+            }
+        }
+        function openmodal(id) {
+            $("#mainmodal").css('display',"inline")
+            $("#mainmodal").css('z-index','100')
+            $("#"+id).css('z-index','100')
+            $("#"+id).css('display','inline')
+        }
+        function closemodal(id) {
+            $("#mainmodal").css('display',"none")
+            $("#mainmodal").css('z-index','-1')
+            $("#"+id).css('z-index','-1')
+            $("#"+id).css('display','none')
+        }
+        function cleardata() {
+            localStorage.clear()
+            window.location.reload()
+        }
+        c.fillRect(0,0,canvas.width,canvas.height)
+        class Grass {
+            constructor({position,maxheight}) {
+                this.position = position
+                this.maxheight = maxheight //-1 * canvas.height/5
+                this.width = 25
+                this.currentheight = 0
+            }
+            draw() {
+                if (this.currentheight > this.maxheight) {
+                    this.currentheight -= 1
+                }
+                c.fillStyle = "green"
+                c.fillRect(this.position.x,this.position.y,this.width,this.currentheight)
+            }
+            update() {
+                this.draw()
+            }
+        }
+        class Sprite {
+            constructor({position,velocity}) {
+                this.position = position
+                this.velocity = velocity
+                this.height = 200
+                this.width = 100
+                this.scythebox = {
+                    //position: this.position,
+                    position: {
+                        x:this.position.x,
+                        y:this.position.y
+                    },
+                    width: this.width + this.width,
+                    height: this.height / 2,
+                }
+                this.wheels = {
+                    leftwheel: {
+                        position: {
+                            x:this.position.x,
+                            y:this.position.y,
+                        },
+                        width: this.width / 2,
+                        height: this.height / 3
+                    },
+                    rightwheel: {
+                        position: {
+                            x:this.position.x + 50,
+                            y:this.position.y + 50,
+                        },
+                        width: this.width / 2,
+                        height: this.height / 3
+                    },
+                }
+            }
+            draw() {
+                c.fillStyle = "#232b2b"
+                c.fillRect(this.position.x,this.position.y,this.width,this.height)
+                //scythe
+                c.fillStyle = "red"
+                c.fillRect(this.scythebox.position.x,this.scythebox.position.y,this.scythebox.width,this.scythebox.height)
+                //wheels
+                c.fillStyle = "black"
+                c.fillRect(this.wheels.rightwheel.position.x,this.wheels.rightwheel.position.y,this.wheels.rightwheel.width,this.wheels.rightwheel.height)
+                c.fillStyle = "black"
+                c.fillRect(this.wheels.leftwheel.position.x,this.wheels.leftwheel.position.y,this.wheels.leftwheel.width,this.wheels.leftwheel.height)
+                c.beginPath()
+                if (lastkey === "d") {
+                    c.moveTo(this.position.x - 150, this.position.y - 150);
+                    c.lineTo(this.position.x + 10, this.position.y + 10);
+                } else {
+                    c.moveTo(this.position.x + this.width * 2 + 50, this.position.y - 150);
+                    c.lineTo(this.position.x + this.width - 10, this.position.y + 10);
+                }
+                c.lineWidth = 20
+                c.strokeStyle = "black"
+                c.stroke();
+            }
+            update() {
+                this.draw()
+                this.position.x += this.velocity.x
+                this.position.y += this.velocity.y
+                if (this.position.y + this.height + this.velocity.y >= canvas.height-100) {
+                    this.velocity.y = 0
+                } else {
+                    this.velocity.y += gravity
+                }
+                this.position.x += this.velocity.x
+                if (this.position.x + this.velocity.x >= canvas.width) {
+                    this.position.x = 0
+                } else if (this.position.x + this.velocity.x <= 0) {
+                    this.position.x = canvas.width
+                }
+                this.scythebox.position.x = this.position.x - this.width + this.width/2
+                this.scythebox.position.y = this.position.y + this.height - this.height / 2
+                this.wheels.rightwheel.position.x = this.position.x + this.width - 10
+                this.wheels.rightwheel.position.y = this.position.y + this.height - this.height / 4
+                this.wheels.leftwheel.position.x = this.position.x - this.width + this.width/2 + 10
+                this.wheels.leftwheel.position.y = this.position.y + this.height - this.height / 4
+            }
+        }
+        let player = new Sprite({
+            position: {
+                x: 1000,
+                y: canvas.height/2,
+            },
+            velocity: {
+                x:0,
+                y:2
+            }
+        })
+        let grassdict = {};
+        let grassdictcounter = 0
+        var grassdictinterval = setInterval(generategrass,mowerstats.grassspawn)
+        function generategrass() {
+            if (currentgrass < mowerstats.grasslimit) {
+                var randomx = Math.ceil(Math.random() * canvas.width - 100)
+                var randomheight = -1 * (Math.ceil((Math.random() * 200) + 100))
+                grassdict[grassdictcounter] = new Grass({
+                    position: {
+                        x:randomx,
+                        y:(canvas.height-100)
+                    },
+                    maxheight: randomheight,
+                })
+                grassdictcounter++
+                currentgrass++
+            }
+        }
+        function animate() {
+            window.requestAnimationFrame(animate)
+            c.fillStyle = "#87ceeb"
+            c.fillRect(0,0,canvas.width,canvas.height)
+            c.fillStyle = "lightgreen"
+            c.fillRect(0,(canvas.height) - (canvas.height/10),canvas.width,(canvas.height) - (canvas.height/10))
+            player.update()
+            Object.keys(grassdict).forEach(key => {
+                grassdict[key].update()
+            })
+            player.velocity.x = 0
+            if (keys.a.pressed && lastkey === "a") {
+                player.velocity.x = -2
+                player.velocity.x -= mowerstats.mowerspeed
+            } else if (keys.d.pressed && lastkey === "d") {
+                player.velocity.x = 2
+                player.velocity.x += mowerstats.mowerspeed
+            } else if (keys.w.pressed && lastkey === "w") {
+                player.velocity.y = -15
+            }
+            //grass collision
+            Object.keys(grassdict).forEach(key => {
+                if (player.scythebox.position.x + player.scythebox.width >= grassdict[key].position.x && player.scythebox.position.x <= grassdict[key].position.x + grassdict[key].width && player.scythebox.height >= grassdict[key].currentheight) {
+                    console.log("Hit grassdict: "+key)
+                    c.fillStyle = "#87ceeb"
+                    c.fillRect(grassdict[key].position.x,grassdict[key].position.y,grassdict[key].width,grassdict[key].currentheight)
+                    if (key == 0) {
+                        delete grassdict[0]
+                    } else {
+                        delete grassdict[key]
+                    }
+                    mowerstats.grass = parseFloat(mowerstats.grass)
+                    mowerstats.grass += parseFloat(mowerstats.grassvalue)
+                    mowerstats.grass = parseFloat(mowerstats.grass).toFixed(2)
+                    mowerstats.exp += parseFloat(mowerstats.expgain)
+                    if (mowerstats.exp >= mowerstats.neededexp) {
+                        mowerstats.exp = 0
+                        mowerstats.level += 1
+                        mowerstats.perkpoints += 1
+                        $("#level").text("Level: " + mowerstats.level)
+                        $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
+                        mowerstats.neededexp *= 1.1
+                    }
+                    currentgrass--
+                    $("#exp").val(mowerstats.exp / mowerstats.neededexp)
+                    $("#grass").text("Grass: "+mowerstats.grass)
+                    localStorage.setItem('mowerstats',JSON.stringify(mowerstats))
+                }
+            })
+
+        }
+        window.addEventListener("keydown", (e) => {
+            switch (e.key){
+                case "d":
+                    keys.d.pressed = true
+                    lastkey = "d"
+                    break
+                case "a":
+                    keys.a.pressed = true
+                    lastkey = "a"
+                    break
+            }
+        })
+        window.addEventListener("keyup", (e) => {
+            switch (e.key){
+                case "d":
+                    keys.d.pressed = false
+                case "a":
+                    keys.a.pressed = false
+                    break
+            }
+        })
+        window.onload = function() {
+            animate()
+        }
+    </script>
+{/literal}
