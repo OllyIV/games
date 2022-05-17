@@ -4,7 +4,8 @@
     <title>Mowing</title>
     <h1 class="h1" style="margin:0">Mow the Lawn</h1>
     <p id="grass">Grass: 0</p>
-    <p id="level">Level: 0</p>
+    <p id="level" class="stat">Level: 0</p>
+    <p id="prestige" class="stat">Prestige: 0</p>
     <progress id="exp" value="0" max="1"> 10% </progress>
     <p id='test'></p>
     <br>
@@ -20,23 +21,23 @@
             <br>
             <table class="modaltable">
                 <tr>
-                    <td><label class="label" for="grassvalue">Grass Value</label></td>
+                    <td><label id="grassvalueupgrade" class="label" for="grassvalue">Grass Value</label></td>
                     <td><input type="button" class="modalbtn" value="Upgrade" id="grassvalue" onclick="upgrade('grassvalue',5,1.2)"></td>
                 </tr>
                 <tr>
-                    <td><label class="label" for="grasslimit">Grass Limit</label></td>
+                    <td><label id="grasslimitupgrade" class="label" for="grasslimit">Grass Limit</label></td>
                     <td><input type="button" class="modalbtn" value="Upgrade" id="grasslimit" onclick="upgrade('grasslimit',1,1.3)"></td>
                 </tr>
                 <tr>
-                    <td><label class="label" for="grassspawn">Grass Spawn Time</label></td>
+                    <td><label id="grassspawnupgrade" class="label" for="grassspawn">Grass Spawn Time</label></td>
                     <td><input type="button" class="modalbtn" value="Upgrade" id="grassspawn" onclick="upgrade('grassspawn',0.9,1.4)"></td>
                 </tr>
                 <tr>
-                    <td><label class="label" for="expgain">Exp Gain</label></td>
+                    <td><label id="expgainupgrade" class="label" for="expgain">Exp Gain</label></td>
                     <td><input type="button" class="modalbtn" value="Upgrade" id="expgain" onclick="upgrade('expgain',3,1.5)"></td>
                 </tr>
                 <tr>
-                    <td><label class="label" for="mowerspeed">Increase Mower Speed by 1</label></td>
+                    <td><label id="mowerspeedupgrade" class="label" for="mowerspeed">Increase Mower Speed by 1</label></td>
                     <td><input type="button" class="modalbtn" value="Upgrade (10000)" id="mowerspeed" onclick="upgrade('mowerspeed',1,2)"></td>
                 </tr>
             </table>
@@ -211,7 +212,7 @@
         z-index:-1;
         background-color:#DEDEDE;
     }
-    #level {
+    .stat {
         font-size:150%;
     }
     #mainmodal {
@@ -287,21 +288,43 @@
     const canvas = document.querySelector('canvas')
     const c = canvas.getContext("2d")
     const gravity = .5
+    const subjects = ["grassvalue","grassspawn","grasslimit","expgain","mowerspeed"]
+    const subjectkey = {"grassvalue":"Grass Value ","grassspawn":"Grass Spawn Time ","grasslimit":"Grass Limit ","expgain":"Exp Gain ","mowerspeed":"Increase Mower Speed by 1 "}
     let lastkey;
+    /*update?
+    if (localStorage.getItem('update')) {
+        let updatestatus = localStorage.getItem('update')
+    } else {
+        let updatestatus = true
+        localStorage.setItem('update',updatestatus)
+    }
+    if (updatestatus) {
+        localStorage.clear()
+        localStorage.setItem('update',false)
+        updatestatus = localStorage.getItem('update')
+    }
+    */
     if (localStorage.getItem('mowerstats')) {
         var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
     } else {
-        var mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':1000,'grasslimit':100,'grassspawn':100,'expgain':100,'mowerspeed':10},'prestige':{'prestigeamount':0,'prestigemultiplier':1}}
+        var mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'upgradelevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':1000,'grasslimit':100,'grassspawn':100,'expgain':100,'mowerspeed':10},'prestige':{'prestigeamount':0,'prestigemultiplier':1}}
         localStorage.setItem('mowerstats',JSON.stringify(mowerstats))
     }
     $("#grass").text("Grass: "+mowerstats.grass)
-    $("#grassvalue").val("Upgrade ("+mowerstats.grassvaluecost+" Grass)")
+    for (var i = 0;i<subjects.length;i++) {
+        let subjectstr = subjects[i]+'cost'
+        console.log(subjectstr)
+        $("#"+subjects[i]).val("Upgrade ("+mowerstats[subjectstr]+" Grass)")
+        $("#"+subjects[i]+"upgrade").text(subjectkey[subjects[i]]+" (Level "+mowerstats.upgradelevels[subjects[i]]+")")
+    }
+    /*$("#grassvalue").val("Upgrade ("+mowerstats.grassvaluecost+" Grass)")
     $("#grassspawn").val("Upgrade ("+mowerstats.grassspawncost+" Grass)")
     $("#grasslimit").val("Upgrade ("+mowerstats.grasslimitcost+" Grass)")
     $("#expgain").val("Upgrade ("+mowerstats.expgaincost+" Grass)")
-    $("#mowerspeed").val("Upgrade ("+mowerstats.mowerspeedcost+" Grass)")
+    $("#mowerspeed").val("Upgrade ("+mowerstats.mowerspeedcost+" Grass)")*/
     $("#exp").val(mowerstats.exp / mowerstats.neededexp)
     $("#level").text("Level: "+mowerstats.level)
+    $("#prestige").text("Prestige: "+mowerstats.prestige.prestigeamount)
     $("#perkpoints").text("Perk Points: "+mowerstats.perkpoints)
     for (var i in mowerstats.perklevels) {
         $("#"+i+"perklevel").text("Level: "+mowerstats.perklevels[i])
@@ -336,6 +359,8 @@
             mowerstats.grass = mowerstats.grass.toFixed(2)
             mowerstats.grass = parseFloat(mowerstats.grass)
             $("#grass").text("Grass: " + mowerstats.grass)
+            mowerstats.upgradelevels[subject] += 1
+            $("#"+subject+"upgrade").text(subjectkey[subject]+"(Level: "+mowerstats.upgradelevels[subject]+")")
             mowerstats[subject + "cost"] *= costmultiplier
             mowerstats[subject + "cost"] = mowerstats[subject + "cost"].toFixed(2)
             $("#"+subject).val("Upgrade ("+mowerstats[subject+"cost"]+" Grass)")
@@ -397,7 +422,7 @@
                 tempprestigemultiplier += (mowerstats.level / 50)
             }
             let tempprestiges = mowerstats.prestige.prestigeamount + 1
-            mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':1000,'grasslimit':100,'grassspawn':100,'expgain':100,'mowerspeed':10},'prestige':{'prestigeamount':tempprestiges,'prestigemultiplier':tempprestigemultiplier}}
+            mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'upgradelevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':1000,'grasslimit':100,'grassspawn':100,'expgain':100,'mowerspeed':10},'prestige':{'prestigeamount':tempprestiges,'prestigemultiplier':tempprestigemultiplier}}
             localStorage.setItem('mowerstats',JSON.stringify(mowerstats))
             window.location.reload()
         }
