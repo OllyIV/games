@@ -1,10 +1,153 @@
 <html>
   <div>
-    <button onclick="window.location.href = 'https://ollyiv.github.io/games/mowing.html">Mowing</button>
+    <button class="btn" onclick="window.location.href = 'https://ollyiv.github.io/games/mowing.html">Mowing</button>
   </div>
  </html>
  <style>
   div {
   text-align:center;
   }
+   }
+        #main {
+            text-align:center;
+            background-color:#87ceeb;
+        }
+        html {
+            font-family: Arial;
+            color:white;
+        }
+        .h1 {
+            font-size:175%;
+        }
+        p {
+            margin:0;
+            font-size:80%;
+        }
+        .modaltable {
+            border-spacing:10px;
+        }
+        .modalp > *{
+            display:inline;
+        }
+        .leveltext {
+            text-align:center;
+            margin:0;
+            font-family: Arial;
+            font-size:150%;
+            width:100%;
+            background-color:#00aaff;
+            color:white;
+            border-radius:12px;
+            padding:2%;
+        }
+        .closebtn {
+            font-size:20px;
+            top:0px;
+            right:0px;
+            float:right;
+            transform: translate(65%,-50%);
+            text-align:center;
+            border-radius:12px;
+            border: 1px solid #00aaff;
+            background-color: #00aaff;
+            color:white;
+            width:10%;
+            height:20%;
+            transition: background-color .5s
+        }
+        .closebtn:hover {
+            background-color: #4fc8ff
+        }
+        .modaltop > * {
+            display:inline;;
+        }
+        .modalh1 {
+            font-family: Arial;
+            margin-left:10%;
+            color:#00aaff;
+        }
+        .modal {
+            color:white;
+            border-radius:12px;
+            font-size:20px;
+            display:none;
+            position:fixed;
+            left: 50%;
+            top:10%;
+            transform: translate(-50%, 0);
+            padding-right:.5%;
+            padding-left:.5%;
+            /*width:25%;
+            height:20%;*/
+            z-index:-1;
+            background-color:#DEDEDE;
+        }
+        #level {
+            font-size:150%;
+        }
+        #mainmodal {
+            display:none;
+            position:fixed;
+            top:0%;
+            z-index:-1;
+            right:0%;
+            left:0%;
+            width:100%;
+            height:100%;
+            background-color:rgba(0,0,0,0.3);
+        }
+        div {
+            z-index:10;
+        }
+        .btn {
+            font-size:150%;
+            text-align:center;
+            border-radius:4px;
+            border: 1px solid #00aaff;
+            background-color: #00aaff;
+            color:white;
+            width:20%;
+            height:5%;
+            transition: background-color .5s
+        }
+        .btn:hover {
+            background-color: #4fc8ff
+        }
+        .modalbtn {
+            font-size:150%;
+            text-align:left;
+            border-radius:4px;
+            border: 1px solid #00aaff;
+            background-color: #00aaff;
+            color:white;
+            width:100%;
+            height:5%;
+            transition: background-color .5s
+        }
+        .modalbtn:hover {
+            background-color: #4fc8ff
+        }
+        .label {
+            font-family: Arial;
+            font-size:150%;
+            color:#00aaff;
+        }
+        #grass {
+            font-size:30px
+        }
+        #maindiv {
+            height:100%;
+            width:100%;
+            text-align:center;
+        }
+        #lawn {
+            width:80%;
+            height:90%;
+            border: 3px solid green;
+            cursor: pointer;
+        }
+        #top {
+            font-family: Arial;
+            font-size:20px;
+        }
 </style>
