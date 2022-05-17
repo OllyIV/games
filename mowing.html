@@ -310,7 +310,6 @@
             mowerstats[subject] /= mowerstats.perkmultipliers[subject]
             mowerstats.perkmultipliers[subject] *= subjectmultiplier;
             mowerstats[subject] *= mowerstats.perkmultipliers[subject]
-            document.getElementById('test').innerHTML = "Subject: "+subject+" | Subject Multi: "+mowerstats.perkmultipliers[subject] + " | Actual Subject Value: "+mowerstats[subject]
             mowerstats.perkpoints -= perkcost;
             mowerstats.perklevels[subject] += 1
             $("#perkpoints").text("Perk Points: "+mowerstats.perkpoints)
