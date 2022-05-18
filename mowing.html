@@ -674,7 +674,7 @@
         if (currentgrass < mowerstats.grasslimit) {
             for (var i = 0; i < mowerstats.grassspawnamount; i++) {
                 var randomx = Math.ceil(Math.random() * canvas.width)
-                var randomheight = -1 * (Math.ceil((Math.random() * 90) + 10))
+                var randomheight = -1 * (Math.ceil((Math.random() * 200) + 100))
                 grassdict[grassdictcounter] = new Grass({
                     position: {
                         x: randomx,
