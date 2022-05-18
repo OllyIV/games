@@ -289,515 +289,515 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
     //try {
-        const canvas = document.querySelector('canvas')
-        const c = canvas.getContext("2d")
-        const gravity = .5
-        const subjects = ["grassvalue", "grassspawn", "grasslimit", "expgain", "mowerspeed"]
-        const subjectkey = {
-            "grassvalue": "Grass Value ",
-            "grassspawn": "Grass Spawn Time ",
-            "grasslimit": "Grass Limit ",
-            "expgain": "Exp Gain ",
-            "mowerspeed": "Increase Mower Speed by 1 "
-        }
-        const perkkey = {
-            "grassvalue": "Grass Value by 10% ",
-            "grassspawn": "Decrease Grass Spawn Time by 30% ",
-            "grasslimit": "Grass Limit by 10 ",
-            "expgain": "Increase Exp Gain by 10% ",
-            "mowerspeed": "Increase Mower Speed by 25% "
-        }
-        let lastkey;
-        /*update?
-        if (localStorage.getItem('update')) {
-            let updatestatus = localStorage.getItem('update')
+    const canvas = document.querySelector('canvas')
+    const c = canvas.getContext("2d")
+    const gravity = .5
+    const subjects = ["grassvalue", "grassspawn", "grasslimit", "expgain", "mowerspeed"]
+    const subjectkey = {
+        "grassvalue": "Grass Value ",
+        "grassspawn": "Grass Spawn Time ",
+        "grasslimit": "Grass Limit ",
+        "expgain": "Exp Gain ",
+        "mowerspeed": "Increase Mower Speed by 1 "
+    }
+    const perkkey = {
+        "grassvalue": "Grass Value by 10% ",
+        "grassspawn": "Decrease Grass Spawn Time by 30% ",
+        "grasslimit": "Grass Limit by 10 ",
+        "expgain": "Increase Exp Gain by 10% ",
+        "mowerspeed": "Increase Mower Speed by 25% "
+    }
+    let lastkey;
+    /*update?
+    if (localStorage.getItem('update')) {
+        let updatestatus = localStorage.getItem('update')
+    } else {
+        let updatestatus = true
+        localStorage.setItem('update',updatestatus)
+    }
+    if (updatestatus) {
+        localStorage.clear()
+        localStorage.setItem('update',false)
+        updatestatus = localStorage.getItem('update')
+    }
+    */
+    if (localStorage.getItem('mowerstats')) {
+        var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
+    } else {
+        var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 5}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},}
+        localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
+    }
+    // try {
+    //   var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
+    //} catch {
+    //var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 5}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},}
+    //  localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
+    //}
+    $("#grass").text("Grass: " + mowerstats.grass)
+    for (var i = 0; i < subjects.length; i++) {
+        let subjectstr = subjects[i] + 'cost'
+        $("#" + subjects[i]).val("Upgrade (" + mowerstats[subjectstr] + " Grass)")
+        $("#" + subjects[i] + "upgrade").text(subjectkey[subjects[i]] + " (Level " + mowerstats.upgradelevels[subjects[i]] + ")")
+    }
+    /*$("#grassvalue").val("Upgrade ("+mowerstats.grassvaluecost+" Grass)")
+    $("#grassspawn").val("Upgrade ("+mowerstats.grassspawncost+" Grass)")
+    $("#grasslimit").val("Upgrade ("+mowerstats.grasslimitcost+" Grass)")
+    $("#expgain").val("Upgrade ("+mowerstats.expgaincost+" Grass)")
+    $("#mowerspeed").val("Upgrade ("+mowerstats.mowerspeedcost+" Grass)")*/
+    $("#exp").val(mowerstats.exp / mowerstats.neededexp)
+    $("#level").text("Level: " + mowerstats.level)
+    $("#prestige").text("Prestige: " + mowerstats.prestige.prestigeamount)
+    $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
+    $("#levelreq").text(100 + mowerstats.prestige.prestigeamount * 50)
+    for (var i in mowerstats.perklevels) {
+        if (mowerstats.perklevels[[i]] === mowerstats.perkmax[[i]]) {
+            $("#" + i + "perklevel").text("Level: " + mowerstats.perklevels[i] + " (Max)")
         } else {
-            let updatestatus = true
-            localStorage.setItem('update',updatestatus)
+            $("#" + i + "perklevel").text("Level: " + mowerstats.perklevels[i] + "")
         }
-        if (updatestatus) {
-            localStorage.clear()
-            localStorage.setItem('update',false)
-            updatestatus = localStorage.getItem('update')
+    }
+    let keys = {
+        a: {
+            pressed: false
+        },
+        d: {
+            pressed: false
+        },
+        w: {
+            pressed: false
         }
-        */
-        /*if (localStorage.getItem('mowerstats')) {
-            var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
-        } else {
-            var mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'grassspawnamount':1,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'upgradelevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':10000,'grasslimit':10,'grassspawn':25,'expgain':25,'mowerspeed':5},'prestige':{'prestigeamount':0,'prestigemultiplier':1},}
-            localStorage.setItem('mowerstats',JSON.stringify(mowerstats))
+    }
+    let currentgrass = 0
+
+    function update() {
+        var tempmowerstats = mowerstats
+        var desiredupdatevariables = {"grassspawnamount": 1 + tempmowerstats.prestigeamount}
+        /*Object.keys(tempmowerstats).forEach(key => {
+            console.log(key+": "+tempmowerstats[key]+" key")
+                Object.keys(tempmowerstats[key]).forEach(smallkey => {
+                    if (smallkey in mowerstats) {
+                        console.log(smallkey + ": " + mowerstats[key][smallkey])
+                    }
+                })
+            })*/
+        /*for (var i=0;i<desiredupdatevariables.length;i++) {
+            if (! desiredupdatevariables[i] in mowerstats) {
+                mowerstats.push({
+                    desiredupdatevariables[i]:
+                })
+            }
         }*/
-        try {
-            var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
-        } catch {
-            var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 5}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},}
-            localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
-        }
-        $("#grass").text("Grass: " + mowerstats.grass)
-        for (var i = 0; i < subjects.length; i++) {
-            let subjectstr = subjects[i] + 'cost'
-            $("#" + subjects[i]).val("Upgrade (" + mowerstats[subjectstr] + " Grass)")
-            $("#" + subjects[i] + "upgrade").text(subjectkey[subjects[i]] + " (Level " + mowerstats.upgradelevels[subjects[i]] + ")")
-        }
-        /*$("#grassvalue").val("Upgrade ("+mowerstats.grassvaluecost+" Grass)")
-        $("#grassspawn").val("Upgrade ("+mowerstats.grassspawncost+" Grass)")
-        $("#grasslimit").val("Upgrade ("+mowerstats.grasslimitcost+" Grass)")
-        $("#expgain").val("Upgrade ("+mowerstats.expgaincost+" Grass)")
-        $("#mowerspeed").val("Upgrade ("+mowerstats.mowerspeedcost+" Grass)")*/
-        $("#exp").val(mowerstats.exp / mowerstats.neededexp)
-        $("#level").text("Level: " + mowerstats.level)
-        $("#prestige").text("Prestige: " + mowerstats.prestige.prestigeamount)
-        $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
-        $("#levelreq").text(100 + mowerstats.prestige.prestigeamount * 50)
-        for (var i in mowerstats.perklevels) {
-            if (mowerstats.perklevels[[i]] === mowerstats.perkmax[[i]]) {
-                $("#" + i + "perklevel").text("Level: " + mowerstats.perklevels[i] + " (Max)")
+        Object.entries(desiredupdatevariables).forEach(entry => {
+            let [key, value] = entry;
+            console.log("entries worked")
+            if (key in mowerstats) {
+
             } else {
-                $("#" + i + "perklevel").text("Level: " + mowerstats.perklevels[i] + "")
+                mowerstats[key] = value
+                console.log("it worked!")
             }
-        }
-        let keys = {
-            a: {
-                pressed: false
-            },
-            d: {
-                pressed: false
-            },
-            w: {
-                pressed: false
+        })
+        localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
+        window.location.reload()
+    }
+
+    function upgrade(subject, subjectmultiplier, costmultiplier) {
+        mowerstats.grass = parseFloat(mowerstats.grass)
+        if (mowerstats.grass >= parseFloat(mowerstats[subject + "cost"])) {
+            var strsubjectmultiplier = "" + subjectmultiplier
+            if (strsubjectmultiplier.includes(".")) {
+                var operation = "*"
+            } else {
+                var operation = "+"
             }
-        }
-        let currentgrass = 0
-
-        function update() {
-            var tempmowerstats = mowerstats
-            var desiredupdatevariables = {"grassspawnamount": 1 + tempmowerstats.prestigeamount}
-            /*Object.keys(tempmowerstats).forEach(key => {
-                console.log(key+": "+tempmowerstats[key]+" key")
-                    Object.keys(tempmowerstats[key]).forEach(smallkey => {
-                        if (smallkey in mowerstats) {
-                            console.log(smallkey + ": " + mowerstats[key][smallkey])
-                        }
-                    })
-                })*/
-            /*for (var i=0;i<desiredupdatevariables.length;i++) {
-                if (! desiredupdatevariables[i] in mowerstats) {
-                    mowerstats.push({
-                        desiredupdatevariables[i]:
-                    })
-                }
-            }*/
-            Object.entries(desiredupdatevariables).forEach(entry => {
-                let [key, value] = entry;
-                console.log("entries worked")
-                if (key in mowerstats) {
-
-                } else {
-                    mowerstats[key] = value
-                    console.log("it worked!")
-                }
-            })
-            localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
-            window.location.reload()
-        }
-
-        function upgrade(subject, subjectmultiplier, costmultiplier) {
+            if (operation == "+") {
+                mowerstats[subject] += subjectmultiplier
+            } else if (operation == "*") {
+                mowerstats[subject] *= subjectmultiplier
+            }
+            mowerstats.grass -= mowerstats[subject + "cost"]
+            mowerstats.grass = mowerstats.grass.toFixed(2)
             mowerstats.grass = parseFloat(mowerstats.grass)
-            if (mowerstats.grass >= parseFloat(mowerstats[subject + "cost"])) {
-                var strsubjectmultiplier = "" + subjectmultiplier
-                if (strsubjectmultiplier.includes(".")) {
-                    var operation = "*"
-                } else {
-                    var operation = "+"
-                }
-                if (operation == "+") {
-                    mowerstats[subject] += subjectmultiplier
-                } else if (operation == "*") {
-                    mowerstats[subject] *= subjectmultiplier
-                }
-                mowerstats.grass -= mowerstats[subject + "cost"]
-                mowerstats.grass = mowerstats.grass.toFixed(2)
-                mowerstats.grass = parseFloat(mowerstats.grass)
-                $("#grass").text("Grass: " + mowerstats.grass)
-                mowerstats.upgradelevels[subject] += 1
-                $("#" + subject + "upgrade").text(subjectkey[subject] + "(Level: " + mowerstats.upgradelevels[subject] + ")")
-                mowerstats[subject + "cost"] *= costmultiplier
-                mowerstats[subject + "cost"] = mowerstats[subject + "cost"].toFixed(2)
-                $("#" + subject).val("Upgrade (" + mowerstats[subject + "cost"] + " Grass)")
-                localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
-                clearInterval(grassdictinterval)
-                grassdictinterval = setInterval(generategrass, mowerstats.grassspawn)
-            }
+            $("#grass").text("Grass: " + mowerstats.grass)
+            mowerstats.upgradelevels[subject] += 1
+            $("#" + subject + "upgrade").text(subjectkey[subject] + "(Level: " + mowerstats.upgradelevels[subject] + ")")
+            mowerstats[subject + "cost"] *= costmultiplier
+            mowerstats[subject + "cost"] = mowerstats[subject + "cost"].toFixed(2)
+            $("#" + subject).val("Upgrade (" + mowerstats[subject + "cost"] + " Grass)")
+            localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
+            clearInterval(grassdictinterval)
+            grassdictinterval = setInterval(generategrass, mowerstats.grassspawn)
         }
+    }
 
-        function perk(subject, subjectmultiplier, perkcost) {
-            if (mowerstats.perkpoints >= perkcost && mowerstats.perklevels[subject] < mowerstats.perkmax[subject]) {
-                var strsubjectmultiplier = "" + subjectmultiplier
-                if (strsubjectmultiplier.includes(".")) {
-                    var operation = "*"
-                } else {
-                    var operation = "+"
-                }
-                if (operation == "+") {
-                    mowerstats[subject] += subjectmultiplier
-                } else if (operation == "*") {
-                    mowerstats[subject] /= mowerstats.perkmultipliers[subject]
-                    mowerstats.perkmultipliers[subject] *= subjectmultiplier;
-                    mowerstats[subject] *= mowerstats.perkmultipliers[subject]
-                }
-                mowerstats.perkpoints -= perkcost;
-                mowerstats.perklevels[subject] += 1
-                $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
-                if (mowerstats.perklevels[subject] >= mowerstats.perkmax[subject]) {
-                    $("#" + subject + "perklevel").text("Level: " + mowerstats.perklevels[subject] + " (Max)")
-                } else {
-                    $("#" + subject + "perklevel").text("Level: " + mowerstats.perklevels[subject])
-                }
-                localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
-                clearInterval(grassdictinterval)
-                grassdictinterval = setInterval(generategrass, mowerstats.grassspawn)
+    function perk(subject, subjectmultiplier, perkcost) {
+        if (mowerstats.perkpoints >= perkcost && mowerstats.perklevels[subject] < mowerstats.perkmax[subject]) {
+            var strsubjectmultiplier = "" + subjectmultiplier
+            if (strsubjectmultiplier.includes(".")) {
+                var operation = "*"
+            } else {
+                var operation = "+"
             }
+            if (operation == "+") {
+                mowerstats[subject] += subjectmultiplier
+            } else if (operation == "*") {
+                mowerstats[subject] /= mowerstats.perkmultipliers[subject]
+                mowerstats.perkmultipliers[subject] *= subjectmultiplier;
+                mowerstats[subject] *= mowerstats.perkmultipliers[subject]
+            }
+            mowerstats.perkpoints -= perkcost;
+            mowerstats.perklevels[subject] += 1
+            $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
+            if (mowerstats.perklevels[subject] >= mowerstats.perkmax[subject]) {
+                $("#" + subject + "perklevel").text("Level: " + mowerstats.perklevels[subject] + " (Max)")
+            } else {
+                $("#" + subject + "perklevel").text("Level: " + mowerstats.perklevels[subject])
+            }
+            localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
+            clearInterval(grassdictinterval)
+            grassdictinterval = setInterval(generategrass, mowerstats.grassspawn)
         }
+    }
 
-        var statupdater = setInterval(function () {
-            try {
-                $("#grassvaluestat").text("Grass Value: " + (mowerstats.grassvalue * mowerstats.prestige.prestigemultiplier).toFixed(2) + "")
-                $("#grassspawnstat").text("Grass Spawn Time: " + parseFloat(mowerstats.grassspawn / 1000).toFixed(3) + "s")
-                $("#grasslimitstat").text("Grass Limit: " + mowerstats.grasslimit + "")
-                $("#expgainstat").text("Exp Gain: " + (mowerstats.expgain * mowerstats.perkmultipliers.expgain).toFixed(2) + "")
-                $("#mowerspeedstat").text("Mower Speed: " + parseFloat(mowerstats.mowerspeed + 2) + "")
-                if (isNaN(parseInt(mowerstats.grassspawnamount))) {
-                    $("#error").text("Your version of the game is not up to date. Please update your game version in the Help Menu.")
-                } else {
-                    $("#grassspawnamount").text("Grass Spawn Amount: " + parseInt(mowerstats.grassspawnamount))
-                }
-                let grassamount = 0
-                for (var i = 0; i < Object.keys(grassdict).length + 1; i++) {
-                    grassamount = i
-                }
-                $("#grassonscreen").text("Grass on screen: " + grassamount + "/" + mowerstats.grasslimit)
-            } catch (err) {
+    var statupdater = setInterval(function () {
+        try {
+            $("#grassvaluestat").text("Grass Value: " + (mowerstats.grassvalue * mowerstats.prestige.prestigemultiplier).toFixed(2) + "")
+            $("#grassspawnstat").text("Grass Spawn Time: " + parseFloat(mowerstats.grassspawn / 1000).toFixed(3) + "s")
+            $("#grasslimitstat").text("Grass Limit: " + mowerstats.grasslimit + "")
+            $("#expgainstat").text("Exp Gain: " + (mowerstats.expgain * mowerstats.perkmultipliers.expgain).toFixed(2) + "")
+            $("#mowerspeedstat").text("Mower Speed: " + parseFloat(mowerstats.mowerspeed + 2) + "")
+            if (isNaN(parseInt(mowerstats.grassspawnamount))) {
                 $("#error").text("Your version of the game is not up to date. Please update your game version in the Help Menu.")
+            } else {
+                $("#grassspawnamount").text("Grass Spawn Amount: " + parseInt(mowerstats.grassspawnamount))
             }
-        }, 1)
-
-        function openmodal(id) {
-            $("#mainmodal").css('display', "inline")
-            $("#mainmodal").css('z-index', '100')
-            $("#" + id).css('z-index', '100')
-            $("#" + id).css('display', 'inline')
-        }
-
-        function closemodal(id) {
-            $("#mainmodal").css('display', "none")
-            $("#mainmodal").css('z-index', '-1')
-            $("#" + id).css('z-index', '-1')
-            $("#" + id).css('display', 'none')
-        }
-
-        function cleardata() {
-            try {
-                player.position.y = 500
-            } catch {
-                console.log("Not updated bruh")
+            let grassamount = 0
+            for (var i = 0; i < Object.keys(grassdict).length + 1; i++) {
+                grassamount = i
             }
-            localStorage.clear()
-            window.location.reload()
+            $("#grassonscreen").text("Grass on screen: " + grassamount + "/" + mowerstats.grasslimit)
+        } catch (err) {
+            $("#error").text("Your version of the game is not up to date. Please update your game version in the Help Menu.")
         }
+    }, 1)
 
-        function prestige() {
-            //mowerstats.prestige.prestigeamount += 1
-            //mowerstats.prestige.prestigemultiplier += mowerstats.level / 2
-            try {
-                if (mowerstats.level >= 100 + (mowerstats.prestige.prestigeamount * 50)) {
-                    let tempprestigemultiplier = mowerstats.prestige.prestigemultiplier
-                    if (tempprestigemultiplier == 1) {
-                        tempprestigemultiplier += (mowerstats.level / 50) - 1
-                    } else {
-                        tempprestigemultiplier += (mowerstats.level / 50)
-                    }
-                    let tempprestiges = mowerstats.prestige.prestigeamount + 1
-                    mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount':(1+tempprestiges),'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perklevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1}, "perkmax": {'grassvalue': 10000 * (tempprestiges + 1), 'grasslimit': 10 * (tempprestiges + 1), 'grassspawn': 25 * (tempprestiges + 1), 'expgain': 25 * (tempprestiges + 1), 'mowerspeed': 5}, 'prestige': {'prestigeamount': tempprestiges, 'prestigemultiplier': tempprestigemultiplier}
-                    }
-                    localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
-                    window.location.reload()
+    function openmodal(id) {
+        $("#mainmodal").css('display', "inline")
+        $("#mainmodal").css('z-index', '100')
+        $("#" + id).css('z-index', '100')
+        $("#" + id).css('display', 'inline')
+    }
+
+    function closemodal(id) {
+        $("#mainmodal").css('display', "none")
+        $("#mainmodal").css('z-index', '-1')
+        $("#" + id).css('z-index', '-1')
+        $("#" + id).css('display', 'none')
+    }
+
+    function cleardata() {
+        try {
+            player.position.y = 500
+        } catch {
+            console.log("Not updated bruh")
+        }
+        localStorage.clear()
+        window.location.reload()
+    }
+
+    function prestige() {
+        //mowerstats.prestige.prestigeamount += 1
+        //mowerstats.prestige.prestigemultiplier += mowerstats.level / 2
+        try {
+            if (mowerstats.level >= 100 + (mowerstats.prestige.prestigeamount * 50)) {
+                let tempprestigemultiplier = mowerstats.prestige.prestigemultiplier
+                if (tempprestigemultiplier == 1) {
+                    tempprestigemultiplier += (mowerstats.level / 50) - 1
+                } else {
+                    tempprestigemultiplier += (mowerstats.level / 50)
                 }
-            } catch (err) {
-                $("#error").text("Your version of the game is not up to date. Please update your game version in the Help Menu.")
-            }
-
-        }
-
-        c.fillRect(0, 0, canvas.width, canvas.height)
-
-        class Grass {
-            constructor({position, maxheight}) {
-                this.position = position
-                this.maxheight = maxheight //-1 * canvas.height/5
-                this.width = 25
-                this.currentheight = 0
-            }
-
-            draw() {
-                if (this.currentheight > this.maxheight) {
-                    this.currentheight -= 1
+                let tempprestiges = mowerstats.prestige.prestigeamount + 1
+                mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount':(1+tempprestiges),'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perklevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1}, "perkmax": {'grassvalue': 10000 * (tempprestiges + 1), 'grasslimit': 10 * (tempprestiges + 1), 'grassspawn': 25 * (tempprestiges + 1), 'expgain': 25 * (tempprestiges + 1), 'mowerspeed': 5}, 'prestige': {'prestigeamount': tempprestiges, 'prestigemultiplier': tempprestigemultiplier}
                 }
-                c.fillStyle = "green"
-                c.fillRect(this.position.x, this.position.y, this.width, this.currentheight)
+                localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
+                window.location.reload()
             }
-
-            update() {
-                this.draw()
-            }
+        } catch (err) {
+            $("#error").text("Your version of the game is not up to date. Please update your game version in the Help Menu.")
         }
 
-        class Sprite {
-            constructor({position, velocity}) {
-                this.position = position
-                this.velocity = velocity
-                this.height = 200
-                this.width = 100
-                this.scythebox = {
-                    //position: this.position,
+    }
+
+    c.fillRect(0, 0, canvas.width, canvas.height)
+
+    class Grass {
+        constructor({position, maxheight}) {
+            this.position = position
+            this.maxheight = maxheight //-1 * canvas.height/5
+            this.width = 25
+            this.currentheight = 0
+        }
+
+        draw() {
+            if (this.currentheight > this.maxheight) {
+                this.currentheight -= 1
+            }
+            c.fillStyle = "green"
+            c.fillRect(this.position.x, this.position.y, this.width, this.currentheight)
+        }
+
+        update() {
+            this.draw()
+        }
+    }
+
+    class Sprite {
+        constructor({position, velocity}) {
+            this.position = position
+            this.velocity = velocity
+            this.height = 200
+            this.width = 100
+            this.scythebox = {
+                //position: this.position,
+                position: {
+                    x: this.position.x,
+                    y: this.position.y
+                },
+                width: this.width + this.width,
+                height: this.height / 2,
+            }
+            this.wheels = {
+                leftwheel: {
                     position: {
                         x: this.position.x,
-                        y: this.position.y
+                        y: this.position.y,
                     },
-                    width: this.width + this.width,
-                    height: this.height / 2,
-                }
-                this.wheels = {
-                    leftwheel: {
-                        position: {
-                            x: this.position.x,
-                            y: this.position.y,
-                        },
-                        width: this.width / 2,
-                        height: this.height / 3
+                    width: this.width / 2,
+                    height: this.height / 3
+                },
+                rightwheel: {
+                    position: {
+                        x: this.position.x + 50,
+                        y: this.position.y + 50,
                     },
-                    rightwheel: {
-                        position: {
-                            x: this.position.x + 50,
-                            y: this.position.y + 50,
-                        },
-                        width: this.width / 2,
-                        height: this.height / 3
-                    },
-                }
+                    width: this.width / 2,
+                    height: this.height / 3
+                },
             }
+        }
 
-            draw() {
-                c.fillStyle = "#232b2b"
-                c.fillRect(this.position.x, this.position.y, this.width, this.height)
-                //scythe
-                c.fillStyle = "red"
-                c.fillRect(this.scythebox.position.x, this.scythebox.position.y, this.scythebox.width, this.scythebox.height)
-                //wheels
-                c.fillStyle = "black"
-                c.fillRect(this.wheels.rightwheel.position.x, this.wheels.rightwheel.position.y, this.wheels.rightwheel.width, this.wheels.rightwheel.height)
-                c.fillStyle = "black"
-                c.fillRect(this.wheels.leftwheel.position.x, this.wheels.leftwheel.position.y, this.wheels.leftwheel.width, this.wheels.leftwheel.height)
-                //c.fillStyle = "blue"
-                //c.fillRect(this.scythebox.trackposition.x,this.scythebox.trackposition.y,this.scythebox.width,this.scythebox.height)
-                c.beginPath()
-                c.lineWidth = 20
-                c.strokeStyle = "black"
-                if (lastkey === "d" || lastkey === "ArrowRight") {
-                    //c.moveTo(this.position.x - 150, this.position.y - 150);
-                    //c.lineTo(this.position.x + 10, this.position.y + 10);
-                    c.moveTo(this.position.x - 200, this.position.y - 50);
-                    c.lineTo(this.position.x - 25, this.position.y + this.height / 2 + 10);
-                    c.stroke();
-                    c.moveTo(this.position.x - 250, this.position.y - 50);
-                    c.lineTo(this.position.x - 194, this.position.y - 50);
-                    c.stroke()
-                } else {
-                    //c.moveTo(this.position.x + this.width * 2 + 50, this.position.y - 150);
-                    //c.lineTo(this.position.x + this.width - 10, this.position.y + 10);
-                    c.moveTo(this.position.x + this.width * 2 + 100, this.position.y - 50);
-                    c.lineTo(this.position.x + this.width + 25, this.position.y + this.height / 2 + 10);
-                    c.stroke();
-                    c.moveTo(this.position.x + this.width * 2 + 94, this.position.y - 50);
-                    c.lineTo(this.position.x + this.width * 2 + 150, this.position.y - 50);
-                    c.stroke()
-                }
+        draw() {
+            c.fillStyle = "#232b2b"
+            c.fillRect(this.position.x, this.position.y, this.width, this.height)
+            //scythe
+            c.fillStyle = "red"
+            c.fillRect(this.scythebox.position.x, this.scythebox.position.y, this.scythebox.width, this.scythebox.height)
+            //wheels
+            c.fillStyle = "black"
+            c.fillRect(this.wheels.rightwheel.position.x, this.wheels.rightwheel.position.y, this.wheels.rightwheel.width, this.wheels.rightwheel.height)
+            c.fillStyle = "black"
+            c.fillRect(this.wheels.leftwheel.position.x, this.wheels.leftwheel.position.y, this.wheels.leftwheel.width, this.wheels.leftwheel.height)
+            //c.fillStyle = "blue"
+            //c.fillRect(this.scythebox.trackposition.x,this.scythebox.trackposition.y,this.scythebox.width,this.scythebox.height)
+            c.beginPath()
+            c.lineWidth = 20
+            c.strokeStyle = "black"
+            if (lastkey === "d" || lastkey === "ArrowRight") {
+                //c.moveTo(this.position.x - 150, this.position.y - 150);
+                //c.lineTo(this.position.x + 10, this.position.y + 10);
+                c.moveTo(this.position.x - 200, this.position.y - 50);
+                c.lineTo(this.position.x - 25, this.position.y + this.height / 2 + 10);
+                c.stroke();
+                c.moveTo(this.position.x - 250, this.position.y - 50);
+                c.lineTo(this.position.x - 194, this.position.y - 50);
+                c.stroke()
+            } else {
+                //c.moveTo(this.position.x + this.width * 2 + 50, this.position.y - 150);
+                //c.lineTo(this.position.x + this.width - 10, this.position.y + 10);
+                c.moveTo(this.position.x + this.width * 2 + 100, this.position.y - 50);
+                c.lineTo(this.position.x + this.width + 25, this.position.y + this.height / 2 + 10);
+                c.stroke();
+                c.moveTo(this.position.x + this.width * 2 + 94, this.position.y - 50);
+                c.lineTo(this.position.x + this.width * 2 + 150, this.position.y - 50);
+                c.stroke()
             }
+        }
 
-            update() {
-                this.draw()
-                this.position.x += this.velocity.x
-                this.position.y += this.velocity.y
-                if (this.position.y + this.height + this.velocity.y >= canvas.height - 100) {
-                    this.velocity.y = 0
-                } else {
-                    this.velocity.y += gravity
-                }
-                this.position.x += this.velocity.x
-                if (this.position.x + this.velocity.x >= canvas.width) {
-                    this.position.x = 0
-                } else if (this.position.x + this.velocity.x <= 0) {
-                    this.position.x = canvas.width
-                }
-                /*if (lastkey === "a") {
-                    this.scythebox.position.x = this.position.x - this.width/2 //- this.width * 2 //+ this.width / 2
-                    this.scythebox.position.y = this.position.y + this.height - this.height / 2
-                } else {
-                    this.scythebox.position.x = this.position.x - this.width + this.width/2
-                    this.scythebox.position.y = this.position.y + this.height - this.height / 2
-                }*/
-                this.scythebox.position.x = this.position.x - this.width + this.width / 2
+        update() {
+            this.draw()
+            this.position.x += this.velocity.x
+            this.position.y += this.velocity.y
+            if (this.position.y + this.height + this.velocity.y >= canvas.height - 100) {
+                this.velocity.y = 0
+            } else {
+                this.velocity.y += gravity
+            }
+            this.position.x += this.velocity.x
+            if (this.position.x + this.velocity.x >= canvas.width) {
+                this.position.x = 0
+            } else if (this.position.x + this.velocity.x <= 0) {
+                this.position.x = canvas.width
+            }
+            /*if (lastkey === "a") {
+                this.scythebox.position.x = this.position.x - this.width/2 //- this.width * 2 //+ this.width / 2
                 this.scythebox.position.y = this.position.y + this.height - this.height / 2
-                this.wheels.rightwheel.position.x = this.position.x + this.width - 10
-                this.wheels.rightwheel.position.y = this.position.y + this.height - this.height / 4
-                this.wheels.leftwheel.position.x = this.position.x - this.width + this.width / 2 + 10
-                this.wheels.leftwheel.position.y = this.position.y + this.height - this.height / 4
-            }
-        }
-        let player = new Sprite({
-            position: {
-                x: canvas.width / 2 - 50,
-                y: canvas.height / 2,
-            },
-            velocity: {
-                x: 0,
-                y: 2
-            }
-        })
-        let grassdict = {};
-        let grassdictcounter = 0
-        var grassdictinterval = setInterval(generategrass, mowerstats.grassspawn)
-
-        function generategrass() {
-            if (currentgrass < mowerstats.grasslimit) {
-                for (var i = 0; i < mowerstats.grassspawnamount; i++) {
-                    var randomx = Math.ceil(Math.random() * canvas.width)
-                    var randomheight = -1 * (Math.ceil((Math.random() * 200) + 100))
-                    grassdict[grassdictcounter] = new Grass({
-                        position: {
-                            x: randomx,
-                            y: (canvas.height - canvas.height / 10)
-                        },
-                        maxheight: randomheight,
-                    })
-                    grassdictcounter++
-                    currentgrass++
-                }
-            }
-        }
-
-        function animate() {
-            window.requestAnimationFrame(animate)
-            c.fillStyle = "#87ceeb"
-            c.fillRect(0, 0, canvas.width, canvas.height)
-            c.fillStyle = "lightgreen"
-            c.fillRect(0, (canvas.height) - (canvas.height / 10), canvas.width, (canvas.height) - (canvas.height / 10))
-            player.update()
-            Object.keys(grassdict).forEach(key => {
-                grassdict[key].update()
-            })
-            /*for (var i = 0;i<Object.keys(grassdict).length-1;i++) {
-                grassdict[i].update()
+            } else {
+                this.scythebox.position.x = this.position.x - this.width + this.width/2
+                this.scythebox.position.y = this.position.y + this.height - this.height / 2
             }*/
-            player.velocity.x = 0
-            if (keys.a.pressed && lastkey === "a") {
-                player.velocity.x = -2
-                player.velocity.x -= mowerstats.mowerspeed
-            } else if (keys.a.pressed && lastkey === "ArrowLeft") {
-                player.velocity.x = -2
-                player.velocity.x -= mowerstats.mowerspeed
-            } else if (keys.d.pressed && lastkey === "d") {
-                player.velocity.x = 2
-                player.velocity.x += mowerstats.mowerspeed
-            } else if (keys.d.pressed && lastkey === "ArrowRight") {
-                player.velocity.x = 2
-                player.velocity.x += mowerstats.mowerspeed
-            }
-            //grass collision
-            Object.keys(grassdict).forEach(key => {
-                if (player.scythebox.position.x + player.scythebox.width >= grassdict[key].position.x && player.scythebox.position.x <= grassdict[key].position.x + grassdict[key].width && player.scythebox.height >= grassdict[key].currentheight) {
-                    c.fillStyle = "#87ceeb"
-                    c.fillRect(grassdict[key].position.x, grassdict[key].position.y, grassdict[key].width, grassdict[key].currentheight)
-                    if (key == 0) {
-                        delete grassdict[0]
-                    } else {
-                        delete grassdict[key]
-                    }
-                    //test
-                    mowerstats.grass = parseFloat(mowerstats.grass)
-                    mowerstats.grass += parseFloat(mowerstats.grassvalue * mowerstats.prestige.prestigemultiplier)
-                    mowerstats.grass = parseFloat(mowerstats.grass).toFixed(2)
-                    mowerstats.exp += parseFloat(mowerstats.expgain * mowerstats.perkmultipliers.expgain)
-                    if (mowerstats.exp >= mowerstats.neededexp) {
-                        mowerstats.exp = 0
-                        mowerstats.level += 1
-                        mowerstats.perkpoints += 1 + mowerstats.prestige.prestigeamount
-                        $("#level").text("Level: " + mowerstats.level)
-                        $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
-                        mowerstats.neededexp *= 1.1
-                    }
-                    currentgrass--
-                    $("#exp").val(mowerstats.exp / mowerstats.neededexp)
-                    $("#grass").text("Grass: " + mowerstats.grass)
-                    localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
-                }
-            })
-            /*for (var i = 0;i<Object.keys(grassdict).length-1;i++) {
-                if (player.scythebox.position.x + player.scythebox.width >= grassdict[i].position.x && player.scythebox.position.x <= grassdict[i].position.x + grassdict[i].width) {
-                    console.log("Hit grassdict: "+i)
-                    c.fillStyle = "#87ceeb"
-                    c.fillRect(grassdict[i].position.x,grassdict[i].position.y,grassdict[i].width,grassdict[i].maxheight)
-                    if (i == 0) {
-                        delete grassdict[0]
-                    } else {
-                        delete grassdict[i]
-                    }
-                }
-            }*/
-
+            this.scythebox.position.x = this.position.x - this.width + this.width / 2
+            this.scythebox.position.y = this.position.y + this.height - this.height / 2
+            this.wheels.rightwheel.position.x = this.position.x + this.width - 10
+            this.wheels.rightwheel.position.y = this.position.y + this.height - this.height / 4
+            this.wheels.leftwheel.position.x = this.position.x - this.width + this.width / 2 + 10
+            this.wheels.leftwheel.position.y = this.position.y + this.height - this.height / 4
         }
+    }
+    let player = new Sprite({
+        position: {
+            x: canvas.width / 2 - 50,
+            y: canvas.height / 2,
+        },
+        velocity: {
+            x: 0,
+            y: 2
+        }
+    })
+    let grassdict = {};
+    let grassdictcounter = 0
+    var grassdictinterval = setInterval(generategrass, mowerstats.grassspawn)
 
-        window.addEventListener("keydown", (e) => {
-            switch (e.key) {
-                case "d":
-                    keys.d.pressed = true
-                    lastkey = "d"
-                    break
-                case "ArrowRight":
-                    keys.d.pressed = true
-                    lastkey = "ArrowRight"
-                    break
-                case "a":
-                    keys.a.pressed = true
-                    lastkey = "a"
-                    break
-                case "ArrowLeft":
-                    keys.a.pressed = true
-                    lastkey = "ArrowLeft"
-                    break
+    function generategrass() {
+        if (currentgrass < mowerstats.grasslimit) {
+            for (var i = 0; i < mowerstats.grassspawnamount; i++) {
+                var randomx = Math.ceil(Math.random() * canvas.width)
+                var randomheight = -1 * (Math.ceil((Math.random() * 200) + 100))
+                grassdict[grassdictcounter] = new Grass({
+                    position: {
+                        x: randomx,
+                        y: (canvas.height - canvas.height / 10)
+                    },
+                    maxheight: randomheight,
+                })
+                grassdictcounter++
+                currentgrass++
+            }
+        }
+    }
+
+    function animate() {
+        window.requestAnimationFrame(animate)
+        c.fillStyle = "#87ceeb"
+        c.fillRect(0, 0, canvas.width, canvas.height)
+        c.fillStyle = "lightgreen"
+        c.fillRect(0, (canvas.height) - (canvas.height / 10), canvas.width, (canvas.height) - (canvas.height / 10))
+        player.update()
+        Object.keys(grassdict).forEach(key => {
+            grassdict[key].update()
+        })
+        /*for (var i = 0;i<Object.keys(grassdict).length-1;i++) {
+            grassdict[i].update()
+        }*/
+        player.velocity.x = 0
+        if (keys.a.pressed && lastkey === "a") {
+            player.velocity.x = -2
+            player.velocity.x -= mowerstats.mowerspeed
+        } else if (keys.a.pressed && lastkey === "ArrowLeft") {
+            player.velocity.x = -2
+            player.velocity.x -= mowerstats.mowerspeed
+        } else if (keys.d.pressed && lastkey === "d") {
+            player.velocity.x = 2
+            player.velocity.x += mowerstats.mowerspeed
+        } else if (keys.d.pressed && lastkey === "ArrowRight") {
+            player.velocity.x = 2
+            player.velocity.x += mowerstats.mowerspeed
+        }
+        //grass collision
+        Object.keys(grassdict).forEach(key => {
+            if (player.scythebox.position.x + player.scythebox.width >= grassdict[key].position.x && player.scythebox.position.x <= grassdict[key].position.x + grassdict[key].width && player.scythebox.height >= grassdict[key].currentheight) {
+                c.fillStyle = "#87ceeb"
+                c.fillRect(grassdict[key].position.x, grassdict[key].position.y, grassdict[key].width, grassdict[key].currentheight)
+                if (key == 0) {
+                    delete grassdict[0]
+                } else {
+                    delete grassdict[key]
+                }
+                //test
+                mowerstats.grass = parseFloat(mowerstats.grass)
+                mowerstats.grass += parseFloat(mowerstats.grassvalue * mowerstats.prestige.prestigemultiplier)
+                mowerstats.grass = parseFloat(mowerstats.grass).toFixed(2)
+                mowerstats.exp += parseFloat(mowerstats.expgain * mowerstats.perkmultipliers.expgain)
+                if (mowerstats.exp >= mowerstats.neededexp) {
+                    mowerstats.exp = 0
+                    mowerstats.level += 1
+                    mowerstats.perkpoints += 1 + mowerstats.prestige.prestigeamount
+                    $("#level").text("Level: " + mowerstats.level)
+                    $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
+                    mowerstats.neededexp *= 1.1
+                }
+                currentgrass--
+                $("#exp").val(mowerstats.exp / mowerstats.neededexp)
+                $("#grass").text("Grass: " + mowerstats.grass)
+                localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
             }
         })
-        window.addEventListener("keyup", (e) => {
-            switch (e.key) {
-                case "d":
-                    keys.d.pressed = false
-                case "a":
-                    keys.a.pressed = false
-                    break
-                case "ArrowLeft":
-                    keys.a.pressed = false
-                    lastkey = "ArrowLeft"
-                    break
-                case "ArrowRight":
-                    keys.d.pressed = false
-                    lastkey = "ArrowRight"
-                    break
+        /*for (var i = 0;i<Object.keys(grassdict).length-1;i++) {
+            if (player.scythebox.position.x + player.scythebox.width >= grassdict[i].position.x && player.scythebox.position.x <= grassdict[i].position.x + grassdict[i].width) {
+                console.log("Hit grassdict: "+i)
+                c.fillStyle = "#87ceeb"
+                c.fillRect(grassdict[i].position.x,grassdict[i].position.y,grassdict[i].width,grassdict[i].maxheight)
+                if (i == 0) {
+                    delete grassdict[0]
+                } else {
+                    delete grassdict[i]
+                }
             }
-        })
-        window.onload = function () {
-            animate()
+        }*/
+
+    }
+
+    window.addEventListener("keydown", (e) => {
+        switch (e.key) {
+            case "d":
+                keys.d.pressed = true
+                lastkey = "d"
+                break
+            case "ArrowRight":
+                keys.d.pressed = true
+                lastkey = "ArrowRight"
+                break
+            case "a":
+                keys.a.pressed = true
+                lastkey = "a"
+                break
+            case "ArrowLeft":
+                keys.a.pressed = true
+                lastkey = "ArrowLeft"
+                break
         }
+    })
+    window.addEventListener("keyup", (e) => {
+        switch (e.key) {
+            case "d":
+                keys.d.pressed = false
+            case "a":
+                keys.a.pressed = false
+                break
+            case "ArrowLeft":
+                keys.a.pressed = false
+                lastkey = "ArrowLeft"
+                break
+            case "ArrowRight":
+                keys.d.pressed = false
+                lastkey = "ArrowRight"
+                break
+        }
+    })
+    window.onload = function () {
+        animate()
+    }
     //} catch {
-        //$("#error").text("Error: There is a bug/storage problem. Please update your version of the game in the Help Menu. If that doesn't work, something's wrong.")
+    //$("#error").text("Error: There is a bug/storage problem. Please update your version of the game in the Help Menu. If that doesn't work, something's wrong.")
     //}
 </script>
 {/literal}
