@@ -500,7 +500,11 @@
                 $("#grasslimitstat").text("Grass Limit: " + mowerstats.grasslimit + "")
                 $("#expgainstat").text("Exp Gain: " + (mowerstats.expgain * mowerstats.perkmultipliers.expgain).toFixed(2) + "")
                 $("#mowerspeedstat").text("Mower Speed: " + parseFloat(mowerstats.mowerspeed + 2) + "")
-                $("#grassspawnamount").text("Grass Spawn Amount: " + parseInt(mowerstats.grassspawnamount))
+                if (isNaN(parseInt(mowerstats.grassspawnamount))) {
+                    $("#error").text("Your version of the game is not up to date. Please update your game version in the Help Menu.")
+                } else {
+                    $("#grassspawnamount").text("Grass Spawn Amount: " + parseInt(mowerstats.grassspawnamount))
+                }
                 let grassamount = 0
                 for (var i = 0; i < Object.keys(grassdict).length + 1; i++) {
                     grassamount = i
