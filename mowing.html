@@ -370,7 +370,7 @@
     let currentgrass = 0
 
     function update() {
-        var tempmowerstats = mowerstats
+        const tempmowerstats = mowerstats
         mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1}}
         Object.keys(tempmowerstats).forEach(key => {
             mowerstats[key] = tempmowerstats[key]
@@ -508,26 +508,26 @@
         localStorage.clear()
         window.location.reload()
     }
-
     function prestige() {
         //mowerstats.prestige.prestigeamount += 1
         //mowerstats.prestige.prestigemultiplier += mowerstats.level / 2
-        //try {
-            if (mowerstats.level >= 100 + (mowerstats.prestige.prestigeamount * 50)) {
-                let tempprestigemultiplier = mowerstats.prestige.prestigemultiplier
-                if (tempprestigemultiplier == 1) {
-                    tempprestigemultiplier += (mowerstats.level / 50) - 1
-                } else {
-                    tempprestigemultiplier += (mowerstats.level / 50)
-                }
-                let tempprestiges = mowerstats.prestige.prestigeamount + 1
-                var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1}}
+        try {
+        player.position.y = 500;
+        if (mowerstats.level >= 100 + (mowerstats.prestige.prestigeamount * 50)) {
+            let tempprestigemultiplier = mowerstats.prestige.prestigemultiplier
+            if (tempprestigemultiplier == 1) {
+                tempprestigemultiplier += (mowerstats.level / 50) - 1
+            } else {
+                tempprestigemultiplier += (mowerstats.level / 50)
             }
-            localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
-            window.location.reload()
-        //} catch (err) {
-          //  $("#error").text("There's a bug. Your version of the game may not be up to date Please update your game version in the Help Menu.")
-        //}
+            let tempprestiges = mowerstats.prestige.prestigeamount + 1
+            mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1}}
+        }
+        localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
+        window.location.reload()
+        } catch (err) {
+          $("#error").text("There's a bug. Your version of the game may not be up to date Please update your game version in the Help Menu.")
+        }
 
     }
 
