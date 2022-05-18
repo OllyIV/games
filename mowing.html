@@ -290,6 +290,7 @@
     const gravity = .5
     const subjects = ["grassvalue","grassspawn","grasslimit","expgain","mowerspeed"]
     const subjectkey = {"grassvalue":"Grass Value ","grassspawn":"Grass Spawn Time ","grasslimit":"Grass Limit ","expgain":"Exp Gain ","mowerspeed":"Increase Mower Speed by 1 "}
+    const perkkey =  {"grassvalue":"Grass Value by 10% ","grassspawn":"Decrease Grass Spawn Time by 30% ","grasslimit":"Grass Limit by 10 ","expgain":"Increase Exp Gain by 10% ","mowerspeed":"Increase Mower Speed by 25% "}
     let lastkey;
     /*update?
     if (localStorage.getItem('update')) {
@@ -307,7 +308,7 @@
     if (localStorage.getItem('mowerstats')) {
         var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
     } else {
-        var mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'upgradelevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':100000,'grasslimit':10000,'grassspawn':10000,'expgain':10000,'mowerspeed':10},'prestige':{'prestigeamount':0,'prestigemultiplier':1}}
+        var mowerstats = {'grass':0,'grassvalue':5,'grassvaluecost':10,'grasslimit':5,'grasslimitcost':15,'grassspawn':5000,'grassspawncost':50,'exp':0,'expgain':3,'expgaincost':1000,'neededexp':50,'level':0,'mowerspeed':1,'mowerspeedcost':10000,'perkpoints':0,'upgradelevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perklevels':{'grassvalue':0,'grasslimit':0,'grassspawn':0,'expgain':0,'mowerspeed':0},'perkmultipliers':{'grassvalue':1,'grasslimit':1,'grassspawn':1,'expgain':1,'mowerspeed':1},"perkmax":{'grassvalue':100000,'grasslimit':1000,'grassspawn':200,'expgain':10000,'mowerspeed':10},'prestige':{'prestigeamount':0,'prestigemultiplier':1}}
         localStorage.setItem('mowerstats',JSON.stringify(mowerstats))
     }
     $("#grass").text("Grass: "+mowerstats.grass)
@@ -327,7 +328,11 @@
     $("#prestige").text("Prestige: "+mowerstats.prestige.prestigeamount)
     $("#perkpoints").text("Perk Points: "+mowerstats.perkpoints)
     for (var i in mowerstats.perklevels) {
-        $("#"+i+"perklevel").text("Level: "+mowerstats.perklevels[i])
+        if (mowerstats.perklevels[[i]] === mowerstats.perkmax[[i]]) {
+            $("#"+i+"perklevel").text("Level: "+mowerstats.perklevels[i]+ " (Max)")
+        } else {
+            $("#"+i+"perklevel").text("Level: "+mowerstats.perklevels[i]+ "")
+        }
     }
     let keys = {
         a: {
@@ -371,9 +376,19 @@
     }
     function perk(subject,subjectmultiplier,perkcost) {
         if (mowerstats.perkpoints >= perkcost && mowerstats.perklevels[subject] < mowerstats.perkmax[subject]) {
-            mowerstats[subject] /= mowerstats.perkmultipliers[subject]
-            mowerstats.perkmultipliers[subject] *= subjectmultiplier;
-            mowerstats[subject] *= mowerstats.perkmultipliers[subject]
+            var strsubjectmultiplier = "" + subjectmultiplier
+            if (strsubjectmultiplier.includes(".")) {
+                var operation = "*"
+            } else {
+                var operation = "+"
+            }
+            if (operation == "+") {
+                mowerstats[subject] += subjectmultiplier
+            } else if (operation == "*") {
+                mowerstats[subject] /= mowerstats.perkmultipliers[subject]
+                mowerstats.perkmultipliers[subject] *= subjectmultiplier;
+                mowerstats[subject] *= mowerstats.perkmultipliers[subject]
+            }
             mowerstats.perkpoints -= perkcost;
             mowerstats.perklevels[subject] += 1
             $("#perkpoints").text("Perk Points: "+mowerstats.perkpoints)
@@ -388,7 +403,7 @@
         }
     }
     var statupdater = setInterval(function() {
-        $("#grassvaluestat").text("Grass Value: "+mowerstats.grassvalue.toFixed(2)+"")
+        $("#grassvaluestat").text("Grass Value: "+mowerstats.grassvalue.toFixed(2) * mowerstats.prestige.prestigemultiplier+"")
         $("#grassspawnstat").text("Grass Spawn Time: "+ parseFloat(mowerstats.grassspawn / 1000).toFixed(3)+"s")
         $("#grasslimitstat").text("Grass Limit: "+mowerstats.grasslimit+"")
         $("#expgainstat").text("Exp Gain: "+mowerstats.expgain.toFixed(2)+"")
@@ -414,7 +429,7 @@
     function prestige() {
         //mowerstats.prestige.prestigeamount += 1
         //mowerstats.prestige.prestigemultiplier += mowerstats.level / 2
-        if (mowerstats.level === 100) {
+        if (mowerstats.level >= 100) {
             let tempprestigemultiplier = mowerstats.prestige.prestigemultiplier
             if (tempprestigemultiplier == 1) {
                 tempprestigemultiplier += (mowerstats.level / 50) - 1
