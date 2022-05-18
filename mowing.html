@@ -330,41 +330,7 @@
         try {
             var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
         } catch {
-            var mowerstats = {
-                'grass': 0,
-                'grassvalue': 5,
-                'grassvaluecost': 10,
-                'grasslimit': 5,
-                'grasslimitcost': 15,
-                'grassspawn': 5000,
-                'grassspawncost': 50,
-                'grassspawnamount': 1,
-                'exp': 0,
-                'expgain': 3,
-                'expgaincost': 1000,
-                'neededexp': 50,
-                'level': 0,
-                'mowerspeed': 1,
-                'mowerspeedcost': 10000,
-                'perkpoints': 0,
-                'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0},
-                'perklevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0},
-                'perkmultipliers': {
-                    'grassvalue': 1,
-                    'grasslimit': 1,
-                    'grassspawn': 1,
-                    'expgain': 1,
-                    'mowerspeed': 1
-                },
-                "perkmax": {
-                    'grassvalue': 10000,
-                    'grasslimit': 10,
-                    'grassspawn': 25,
-                    'expgain': 25,
-                    'mowerspeed': 5
-                },
-                'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},
-            }
+            var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 5}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},}
             localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
         }
         $("#grass").text("Grass: " + mowerstats.grass)
@@ -495,7 +461,7 @@
 
         var statupdater = setInterval(function () {
             try {
-                $("#grassvaluestat").text("Grass Value: " + mowerstats.grassvalue.toFixed(2) * mowerstats.prestige.prestigemultiplier + "")
+                $("#grassvaluestat").text("Grass Value: " + (mowerstats.grassvalue * mowerstats.prestige.prestigemultiplier).toFixed(2) + "")
                 $("#grassspawnstat").text("Grass Spawn Time: " + parseFloat(mowerstats.grassspawn / 1000).toFixed(3) + "s")
                 $("#grasslimitstat").text("Grass Limit: " + mowerstats.grasslimit + "")
                 $("#expgainstat").text("Exp Gain: " + (mowerstats.expgain * mowerstats.perkmultipliers.expgain).toFixed(2) + "")
