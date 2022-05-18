@@ -70,7 +70,7 @@
                 <tr>
                     <td><label class="label" for="mowerspeedperk">Increase Mower Speed by 25%</label></td>
                     <td><p class="leveltext" id="mowerspeedperklevel">Level: 0</p></td>
-                    <td><input type="button" class="modalbtn" value="Upgrade (10 perk points)" id="mowerspeedperk" onclick="perk('mowerspeed',1.25,10)"></td>
+                    <td><input type="button" class="modalbtn" value="Upgrade (10 perk points)" id="mowerspeedperk" onclick="perk('mowerspeed',1,10)"></td>
                 </tr>
             </table>
             <br>
@@ -465,7 +465,7 @@
             $("#grassspawnstat").text("Grass Spawn Time: " + parseFloat(mowerstats.grassspawn / 1000).toFixed(3) + "s")
             $("#grasslimitstat").text("Grass Limit: " + mowerstats.grasslimit + "")
             $("#expgainstat").text("Exp Gain: " + (mowerstats.expgain * mowerstats.perkmultipliers.expgain).toFixed(2) + "")
-            $("#mowerspeedstat").text("Mower Speed: " + parseFloat(mowerstats.mowerspeed + 2) + "")
+            $("#mowerspeedstat").text("Mower Speed: " + parseFloat(mowerstats.mowerspeed + 2).toFixed(2) + "")
             if (isNaN(parseInt(mowerstats.grassspawnamount))) {
                 $("#error").text("Your version of the game is not up to date. Please update your game version in the Help Menu.")
             } else {
