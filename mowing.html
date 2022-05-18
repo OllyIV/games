@@ -512,7 +512,7 @@
     function prestige() {
         //mowerstats.prestige.prestigeamount += 1
         //mowerstats.prestige.prestigemultiplier += mowerstats.level / 2
-        try {
+        //try {
             if (mowerstats.level >= 100 + (mowerstats.prestige.prestigeamount * 50)) {
                 let tempprestigemultiplier = mowerstats.prestige.prestigemultiplier
                 if (tempprestigemultiplier == 1) {
@@ -525,9 +525,9 @@
             }
             localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
             window.location.reload()
-        } catch (err) {
-            $("#error").text("Your version of the game is not up to date. Please update your game version in the Help Menu.")
-        }
+        //} catch (err) {
+          //  $("#error").text("There's a bug. Your version of the game may not be up to date Please update your game version in the Help Menu.")
+        //}
 
     }
 
