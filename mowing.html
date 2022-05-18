@@ -98,6 +98,7 @@
             <div>
                 <p style="color:#00aaff;font-size:125%;"><strong>Instructions:</strong> <br>To play, you can use the Left/Right arrows or A/D. You mow the grass, earn grass, and spend the grass to buy upgrades to get even more grass. When you level up, you earn a perk point. You can spend these in the Perks section. If you want to, you can clear your data to start over.</p>
                 <br>
+                <p style="color:#00aaff;font-size:125%;"><strong></strong></p>
                 <div style="background-color:#00aaff;width:50%;">
                     <h2>Stats:</h2>
                     <p class="stattext" id="grassvaluestat">Grass Value: 5</p>
@@ -421,11 +422,11 @@
         $("#"+id).css('display','none')
     }
     function cleardata() {
-        try:
+        try
         {
             player.position.y = 500
         }
-        catch: {
+        catch {
             console.log("Not updated bruh")
         }
         localStorage.clear()
