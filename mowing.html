@@ -324,7 +324,7 @@
     if (localStorage.getItem('mowerstats')) {
         var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
     } else {
-        var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 5}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},}
+        var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},}
         localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
     }
     // try {
@@ -371,7 +371,11 @@
 
     function update() {
         var tempmowerstats = mowerstats
-        var desiredupdatevariables = {"grassspawnamount": 1 + tempmowerstats.prestigeamount}
+        mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1}}
+        Object.keys(tempmowerstats).forEach(key => {
+            mowerstats[key] = tempmowerstats[key]
+        })
+        //var desiredupdatevariables = {"grassspawnamount": 1 + tempmowerstats.prestigeamount}
         /*Object.keys(tempmowerstats).forEach(key => {
             console.log(key+": "+tempmowerstats[key]+" key")
                 Object.keys(tempmowerstats[key]).forEach(smallkey => {
@@ -386,7 +390,7 @@
                     desiredupdatevariables[i]:
                 })
             }
-        }*/
+        }
         Object.entries(desiredupdatevariables).forEach(entry => {
             let [key, value] = entry;
             console.log("entries worked")
@@ -396,7 +400,7 @@
                 mowerstats[key] = value
                 console.log("it worked!")
             }
-        })
+        })*/
         localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
         window.location.reload()
     }
@@ -517,7 +521,7 @@
                     tempprestigemultiplier += (mowerstats.level / 50)
                 }
                 let tempprestiges = mowerstats.prestige.prestigeamount + 1
-                var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 5}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},}
+                var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1}}
                 }
                 localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
                 window.location.reload()
