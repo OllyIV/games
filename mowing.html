@@ -314,7 +314,6 @@
     $("#grass").text("Grass: "+mowerstats.grass)
     for (var i = 0;i<subjects.length;i++) {
         let subjectstr = subjects[i]+'cost'
-        console.log(subjectstr)
         $("#"+subjects[i]).val("Upgrade ("+mowerstats[subjectstr]+" Grass)")
         $("#"+subjects[i]+"upgrade").text(subjectkey[subjects[i]]+" (Level "+mowerstats.upgradelevels[subjects[i]]+")")
     }
@@ -422,7 +421,13 @@
         $("#"+id).css('display','none')
     }
     function cleardata() {
-        player.position.y = 500
+        try:
+        {
+            player.position.y = 500
+        }
+        catch: {
+            console.log("Not updated bruh")
+        }
         localStorage.clear()
         window.location.reload()
     }
@@ -619,7 +624,6 @@
         //grass collision
         Object.keys(grassdict).forEach(key => {
             if (player.scythebox.position.x + player.scythebox.width >= grassdict[key].position.x && player.scythebox.position.x <= grassdict[key].position.x + grassdict[key].width && player.scythebox.height >= grassdict[key].currentheight) {
-                console.log("Hit grassdict: "+key)
                 c.fillStyle = "#87ceeb"
                 c.fillRect(grassdict[key].position.x,grassdict[key].position.y,grassdict[key].width,grassdict[key].currentheight)
                 if (key == 0) {
