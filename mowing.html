@@ -106,6 +106,7 @@
                     <p class="stattext" id="grassspawnstat">Grass Spawn Time (In milliseconds): 5000</p>
                     <p class="stattext" id="expgainstat">Exp Gain: 3</p>
                     <p class="stattext" id="mowerspeedstat">Mower Speed: 3</p>
+                    <p class="stattext" id="grassonscreen">Grass on screen: 0/5</p>
                     <br>
                 </div>
                 <br>
@@ -408,6 +409,11 @@
         $("#grasslimitstat").text("Grass Limit: "+mowerstats.grasslimit+"")
         $("#expgainstat").text("Exp Gain: "+mowerstats.expgain.toFixed(2)+"")
         $("#mowerspeedstat").text("Mower Speed: "+parseInt(mowerstats.mowerspeed + 2)+ "")
+        let grassamount = 0
+        for (var i=0;i<Object.keys(grassdict).length+1;i++) {
+            grassamount = i
+        }
+        $("#grassonscreen").text("Grass on screen: "+grassamount+"/"+mowerstats.grasslimit)
     },1)
     function openmodal(id) {
         $("#mainmodal").css('display',"inline")
