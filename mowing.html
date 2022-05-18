@@ -116,7 +116,7 @@
             </div>
             <br>
             <div>
-                <p style="color:#00aaff;font-size:125%;">To Prestige, you must be at least level 100.<br> Once you Prestige, you will gain more Perk Points and Grass in your next life.<br>
+                <p style="color:#00aaff;font-size:125%;">To Prestige, you must be at least level <span id="levelreq">100</span>.<br> Once you Prestige, you will gain more Perk Points and Grass in your next life.<br>
                     If you are ready to Prestige, click below.</p>
                 <br>
                 <button onclick="prestige()" class="btn">Prestige</button>
@@ -324,6 +324,7 @@
     $("#level").text("Level: "+mowerstats.level)
     $("#prestige").text("Prestige: "+mowerstats.prestige.prestigeamount)
     $("#perkpoints").text("Perk Points: "+mowerstats.perkpoints)
+    $("#levelreq").text(100 + mowerstats.prestige.prestigeamount * 100)
     for (var i in mowerstats.perklevels) {
         if (mowerstats.perklevels[[i]] === mowerstats.perkmax[[i]]) {
             $("#"+i+"perklevel").text("Level: "+mowerstats.perklevels[i]+ " (Max)")
@@ -437,7 +438,7 @@
     function prestige() {
         //mowerstats.prestige.prestigeamount += 1
         //mowerstats.prestige.prestigemultiplier += mowerstats.level / 2
-        if (mowerstats.level >= 100) {
+        if (mowerstats.level >= 100 + (mowerstats.prestige.prestigeamount * 100)) {
             let tempprestigemultiplier = mowerstats.prestige.prestigemultiplier
             if (tempprestigemultiplier == 1) {
                 tempprestigemultiplier += (mowerstats.level / 50) - 1
