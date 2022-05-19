@@ -419,10 +419,13 @@
             } else if (operation == "*") {
                 mowerstats[subject] *= subjectmultiplier
             }
+            if (subject !== "grassspawn") {
+                mowerstats[subject] += mowerstats.prestige.prestigeamount
+            }
             mowerstats.grass -= mowerstats[subject + "cost"]
             mowerstats.grass = mowerstats.grass.toFixed(2)
             mowerstats.grass = parseFloat(mowerstats.grass)
-            $("#grass").text("Grass: " + mowerstats.grass)
+            $("#grass").text("Grass: " + simplify(mowerstats.grass))
             mowerstats.upgradelevels[subject] += 1
             $("#" + subject + "upgrade").text(subjectkey[subject] + "(Level: " + mowerstats.upgradelevels[subject] + ")")
             mowerstats[subject + "cost"] *= costmultiplier
@@ -735,7 +738,7 @@
                 if (mowerstats.exp >= mowerstats.neededexp) {
                     mowerstats.exp = 0
                     mowerstats.level += 1
-                    mowerstats.perkpoints += 1 + mowerstats.prestige.prestigeamount
+                    mowerstats.perkpoints += 1
                     $("#level").text("Level: " + mowerstats.level)
                     $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
                     mowerstats.neededexp *= 1.1
