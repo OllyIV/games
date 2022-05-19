@@ -7,7 +7,7 @@
     <button id="end" onclick="end()" style="display:none;background-color:Cornflowerblue;color:Navy;border-color:DodgerBlue;">Replay</button>
     <button id="start" onclick="start()" style="background-color:Cornflowerblue;color:Navy;border-color:DodgerBlue;">Start</button>
     <p style="color:DodgerBlue;" id="score"></p>
-    <p style="color:DodgerBlue;" id="timer"></p>
+    <p style="color:DodgerBlue;" id="timer">30 seconds</p>
     <p style="color:DodgerBlue;" id="text"></p>
 </div>
 <section onclick="subtract()" align="center" style="background-color:DodgerBlue; height:100%; width:100%;">
@@ -71,12 +71,13 @@
         }
     }
     function countdown() {
+        timeLeft--;
         if (timeLeft == 0) {
             clearTimeout(timerId);
             results();
         } else {
             elem.innerHTML = timeLeft + ' second(s) left!';
-            timeLeft--;
+
         }
     }
     function subtract() {
