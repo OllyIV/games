@@ -333,10 +333,10 @@
     //var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 5}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},}
     //  localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
     //}
-    $("#grass").text("Grass: " + mowerstats.grass)
+    $("#grass").text("Grass: " + simplify(mowerstats.grass))
     for (var i = 0; i < subjects.length; i++) {
         let subjectstr = subjects[i] + 'cost'
-        $("#" + subjects[i]).val("Upgrade (" + mowerstats[subjectstr] + " Grass)")
+        $("#" + subjects[i]).val("Upgrade (" + simplify(mowerstats[subjectstr]) + " Grass)")
         $("#" + subjects[i] + "upgrade").text(subjectkey[subjects[i]] + " (Level " + mowerstats.upgradelevels[subjects[i]] + ")")
     }
     /*$("#grassvalue").val("Upgrade ("+mowerstats.grassvaluecost+" Grass)")
@@ -427,7 +427,7 @@
             $("#" + subject + "upgrade").text(subjectkey[subject] + "(Level: " + mowerstats.upgradelevels[subject] + ")")
             mowerstats[subject + "cost"] *= costmultiplier
             mowerstats[subject + "cost"] = mowerstats[subject + "cost"].toFixed(2)
-            $("#" + subject).val("Upgrade (" + mowerstats[subject + "cost"] + " Grass)")
+            $("#" + subject).val("Upgrade (" + simplify(mowerstats[subject + "cost"]) + " Grass)")
             localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
             clearInterval(grassdictinterval)
             grassdictinterval = setInterval(generategrass, mowerstats.grassspawn)
@@ -528,11 +528,13 @@
         } catch (err) {
             $("#error").text("There's a bug. Your version of the game may not be up to date Please update your game version in the Help Menu.")
         }
-
     }
-
+    function simplify(numb) {
+        var str = numb.toString().split(".");
+        str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return str.join(".");
+    }
     c.fillRect(0, 0, canvas.width, canvas.height)
-
     class Grass {
         constructor({position, maxheight}) {
             this.position = position
@@ -740,7 +742,7 @@
                 }
                 currentgrass--
                 $("#exp").val(mowerstats.exp / mowerstats.neededexp)
-                $("#grass").text("Grass: " + mowerstats.grass)
+                $("#grass").text("Grass: " + simplify(mowerstats.grass))
                 localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
             }
         })
