@@ -348,7 +348,7 @@
     $("#level").text("Level: " + mowerstats.level)
     $("#prestige").text("Prestige: " + mowerstats.prestige.prestigeamount)
     $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
-    $("#levelreq").text(100 + mowerstats.prestige.prestigeamount * 50)
+    $("#levelreq").text(100 + mowerstats.prestige.prestigeamount * 25)
     for (var i in mowerstats.perklevels) {
         if (mowerstats.perklevels[[i]] === mowerstats.perkmax[[i]]) {
             $("#" + i + "perklevel").text("Level: " + mowerstats.perklevels[i] + " (Max)")
