@@ -3,21 +3,15 @@
 <div align="center" style="background-color:lightblue;padding:10px">
     <div style="color:DodgerBlue;" id="highscore"></div>
     <h1 style="color:DodgerBlue;font-size:30px">Hand-Eye Coordination Test</h1>
-    <p style="color:DodgerBlue;"><strong>How to play: </strong>Click the dot over and over to see how good your
-        coordination is! Don't miss, or your score goes down!</p>
-    <button id="end" onClick="end()"
-            style="display:none;background-color:Cornflowerblue;color:Navy;border-color:DodgerBlue;">Replay
-    </button>
-    <button id="start" onClick="start()" style="background-color:Cornflowerblue;color:Navy;border-color:DodgerBlue;">
-        Start
-    </button>
+    <p style="color:DodgerBlue;"><strong>How to play: </strong>Click the dot over and over to see how good your coordination is! Don't miss, or your score goes down!</p>
+    <button id="end" onclick="end()" style="display:none;background-color:Cornflowerblue;color:Navy;border-color:DodgerBlue;">Replay</button>
+    <button id="start" onclick="start()" style="background-color:Cornflowerblue;color:Navy;border-color:DodgerBlue;">Start</button>
     <p style="color:DodgerBlue;" id="score"></p>
     <p style="color:DodgerBlue;" id="timer"></p>
     <p style="color:DodgerBlue;" id="text"></p>
 </div>
-<section onClick="subtract()" align="center" style="background-color:DodgerBlue; height:100%; width:100%;">
-    <button className="dot" id="dot" onClick="add()"
-            style="border-color:transparent;background-color:lightblue;margin:10px;display:none;"></button>
+<section onclick="subtract()" align="center" style="background-color:DodgerBlue; height:100%; width:100%;">
+    <button class="dot" id="dot" onclick="add()" style="border-color:transparent;background-color:lightblue;margin:10px;display:none;"></button>
 </section>
 <style>
     .dot {
@@ -26,9 +20,8 @@
         border-radius: 50%;
         display: inline-block;
     }
-
     #end {
-        display: none;
+        display:none;
     }
 </style>
 <script>
@@ -41,21 +34,18 @@
     var timeLeft = 30;
     var elem = document.getElementById('timer');
     var timerId;
-
     function start() {
         var timerId = setInterval(countdown, 1000);
         document.getElementById('start').style.display = "none";
         document.getElementById('dot').style.display = "inline-block";
     }
-
-    if (localStorage.getItem("highscore")) {
+    if ( localStorage.getItem("highscore") ) {
         var highscore = localStorage.getItem("highscore");
         document.getElementById('highscore').innerHTML = "High Score: " + highscore + "";
     } else {
         var highscore = 0;
-        localStorage.setItem("highscore", highscore);
+        localStorage.setItem("highscore",highscore);
     }
-
     function results() {
         document.getElementById('dot').style.display = "none"
         document.getElementById('end').style.display = "inline-block"
@@ -80,7 +70,6 @@
             document.getElementById('text').innerHTML = "Nice job, that's about 1 click per second."
         }
     }
-
     function countdown() {
         if (timeLeft == 0) {
             clearTimeout(timerId);
@@ -90,12 +79,10 @@
             timeLeft--;
         }
     }
-
     function subtract() {
         score--
         document.getElementById("score").innerHTML = "Score: " + score + "";
     }
-
     function add() {
         score = score + 2
         document.getElementById("score").innerHTML = "Score: " + score + "";
@@ -104,9 +91,8 @@
         console.log = X;
         dot.style.transform = "translate(" + X + "%," + Y + "%)";
     }
-
     function coordinateX() {
-        decision = Math.floor(Math.random() * 2) + 1;
+        decision = Math.floor(Math.random() * 2 ) + 1;
         if (decision === 2) {
             return Math.floor(Math.random() * -900) - 1;
         }
@@ -114,11 +100,9 @@
             return Math.floor(Math.random() * 900) + 1;
         }
     }
-
     function coordinateY() {
         return Math.floor(Math.random() * 500) + 1;
     }
-
     function end() {
         location.reload();
     }
