@@ -93,11 +93,11 @@
             </div>
             <br>
             <div>
-                <p style="color:#00aaff;font-size:125%;"><strong>Instructions:</strong> <br>To play, you can use the Left/Right arrows or A/D. You mow the grass, earn grass, and spend the grass to buy upgrades to get even more grass. When you level up, you earn a perk point. You can spend these in the Perks section. If you want to, you can clear your data to start over. (If you experience any problems, try updating the game version!)</p>
+                <p style="color:#00aaff;font-size:100%;"><strong>Instructions:</strong> <br>To play, you can use the Left/Right arrows or A/D. You mow the grass, earn grass, and spend the grass to buy upgrades to get even more grass. When you level up, you earn a perk point. You can spend these in the Perks section. If you want to, you can clear your data to start over. (If you experience any problems, try updating the game version!)</p>
                 <br>
                 <p style="color:#00aaff;font-size:125%;"><strong></strong></p>
                 <div style="background-color:#00aaff;width:50%;">
-                    <h2>Stats:</h2>
+                    <h2 style="margin:0">Stats:</h2>
                     <p class="stattext" id="grassvaluestat">Grass Value: 5</p>
                     <p class="stattext" id="grasslimitstat">Grass Limit: 5</p>
                     <p class="stattext" id="grassspawnstat">Grass Spawn Time (In milliseconds): 5000</p>
@@ -108,10 +108,54 @@
                     <br>
                 </div>
                 <br>
-                <button class="btn" onclick="update()">Update</button>
+                <p style="color:#00aaff;font-size:100%;">Lawn Mower Colors</p>
+                <button id="red" class="color" style="background-color:red;padding:1%;" onclick="changemowercolor(this.id)"></button>
+                <button id="orange" class="color" style="background-color:orange;padding:1%;" onclick="changemowercolor(this.id)"></button>
+                <button id="yellow" class="color" style="background-color:yellow;padding:1%;" onclick="changemowercolor(this.id)"></button>
+                <button id="green" class="color" style="background-color:green;padding:1%;" onclick="changemowercolor(this.id)"></button>
+                <button id="blue" class="color" style="background-color:blue;padding:1%;" onclick="changemowercolor(this.id)"></button>
+                <button id="pink" class="color" style="background-color:pink;padding:1%;" onclick="changemowercolor(this.id)"></button>
+                <button id="purple" class="color" style="background-color:purple;padding:1%;" onclick="changemowercolor(this.id)"></button>
+                <button id="black" class="color" style="background-color:black;padding:1%;" onclick="changemowercolor(this.id)"></button>
                 <br>
                 <br>
-                <button class="btn" onclick="cleardata()">Clear Data</button>
+                <p style="color:#00aaff;font-size:100%;">Engine Colors</p>
+                <button id="red" class="color" style="background-color:red;padding:1%;" onclick="changeenginecolor(this.id)"></button>
+                <button id="orange" class="color" style="background-color:orange;padding:1%;" onclick="changeenginecolor(this.id)"></button>
+                <button id="yellow" class="color" style="background-color:yellow;padding:1%;" onclick="changeenginecolor(this.id)"></button>
+                <button id="green" class="color" style="background-color:green;padding:1%;" onclick="changeenginecolor(this.id)"></button>
+                <button id="blue" class="color" style="background-color:blue;padding:1%;" onclick="changeenginecolor(this.id)"></button>
+                <button id="pink" class="color" style="background-color:pink;padding:1%;" onclick="changeenginecolor(this.id)"></button>
+                <button id="purple" class="color" style="background-color:purple;padding:1%;" onclick="changeenginecolor(this.id)"></button>
+                <button id="black" class="color" style="background-color:black;padding:1%;" onclick="changeenginecolor(this.id)"></button>
+                <br>
+                <br>
+                <p style="color:#00aaff;font-size:100%;">Wheel & Stripe Colors</p>
+                <button id="red" class="color" style="background-color:red;padding:1%;" onclick="changewheelcolor(this.id)"></button>
+                <button id="orange" class="color" style="background-color:orange;padding:1%;" onclick="changewheelcolor(this.id)"></button>
+                <button id="yellow" class="color" style="background-color:yellow;padding:1%;" onclick="changewheelcolor(this.id)"></button>
+                <button id="green" class="color" style="background-color:green;padding:1%;" onclick="changewheelcolor(this.id)"></button>
+                <button id="blue" class="color" style="background-color:blue;padding:1%;" onclick="changewheelcolor(this.id)"></button>
+                <button id="pink" class="color" style="background-color:pink;padding:1%;" onclick="changewheelcolor(this.id)"></button>
+                <button id="purple" class="color" style="background-color:purple;padding:1%;" onclick="changewheelcolor(this.id)"></button>
+                <button id="black" class="color" style="background-color:black;padding:1%;" onclick="changewheelcolor(this.id)"></button>
+                <br>
+                <br>
+                <p style="color:#00aaff;font-size:100%;">Handle Colors</p>
+                <button id="red" class="color" style="background-color:red;padding:1%;" onclick="changehandlecolor(this.id)"></button>
+                <button id="orange" class="color" style="background-color:orange;padding:1%;" onclick="changehandlecolor(this.id)"></button>
+                <button id="yellow" class="color" style="background-color:yellow;padding:1%;" onclick="changehandlecolor(this.id)"></button>
+                <button id="green" class="color" style="background-color:green;padding:1%;" onclick="changehandlecolor(this.id)"></button>
+                <button id="blue" class="color" style="background-color:blue;padding:1%;" onclick="changehandlecolor(this.id)"></button>
+                <button id="pink" class="color" style="background-color:pink;padding:1%;" onclick="changehandlecolor(this.id)"></button>
+                <button id="purple" class="color" style="background-color:purple;padding:1%;" onclick="changehandlecolor(this.id)"></button>
+                <button id="black" class="color" style="background-color:black;padding:1%;" onclick="changehandlecolor(this.id)"></button>
+                <br>
+                <br>
+                <button class="btn" style="width:20%;height:10%;font-size:100%" onclick="update()">Update</button>
+                <br>
+                <br>
+                <button class="btn" style="width:20%;height:10%;font-size:100%" onclick="cleardata()">Clear Data</button>
             </div>
         </div>
         <div align="center" id="prestigemodal" class="modal" style="width:50%;height:50%;">
@@ -233,7 +277,7 @@
         z-index:10;
     }
     .btn {
-        font-size:150%;
+        font-size:100%;
         text-align:center;
         border-radius:4px;
         border: 1px solid #00aaff;
@@ -247,7 +291,7 @@
         background-color: #4fc8ff
     }
     .modalbtn {
-        font-size:150%;
+        font-size:125%;
         text-align:left;
         border-radius:4px;
         border: 1px solid #00aaff;
@@ -324,7 +368,7 @@
     if (localStorage.getItem('mowerstats')) {
         var mowerstats = JSON.parse(localStorage.getItem('mowerstats'))
     } else {
-        var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},'mowercolor':"red"}
+        var mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},'mowercolor':"red","wheelcolor":"black","handlecolor":"black","enginecolor":"black"}
         localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
     }
     // try {
@@ -371,7 +415,7 @@
 
     function update() {
         const tempmowerstats = mowerstats
-        mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},"mowercolor":"red"}
+        mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': 0, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000, 'grasslimit': 10, 'grassspawn': 25, 'expgain': 25, 'mowerspeed': 10}, 'prestige': {'prestigeamount': 0, 'prestigemultiplier': 1},"mowercolor":"red","wheelcolor":"black","enginecolor":"black"}
         Object.keys(tempmowerstats).forEach(key => {
             mowerstats[key] = tempmowerstats[key]
         })
@@ -524,7 +568,7 @@
                     tempprestigemultiplier += (mowerstats.level / 50)
                 }
                 let tempprestiges = mowerstats.prestige.prestigeamount + 1
-                mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1 + tempprestiges, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': tempprestiges * 2, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000 * (tempprestiges + 1), 'grasslimit': 10 + ( 10 * (tempprestiges + 1)), 'grassspawn': 25 + ( 10 * (tempprestiges + 1)), 'expgain': 25 + ( 10 * (tempprestiges + 1)), 'mowerspeed': 10}, 'prestige': {'prestigeamount': tempprestiges, 'prestigemultiplier': tempprestigemultiplier},"mowercolor":mowerstats.mowercolor}
+                mowerstats = {'grass': 0, 'grassvalue': 5, 'grassvaluecost': 10, 'grasslimit': 5, 'grasslimitcost': 15, 'grassspawn': 5000, 'grassspawncost': 50, 'grassspawnamount': 1 + tempprestiges, 'exp': 0, 'expgain': 3, 'expgaincost': 1000, 'neededexp': 50, 'level': 0, 'mowerspeed': 1, 'mowerspeedcost': 10000, 'perkpoints': tempprestiges * 2, 'upgradelevels': {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, 'perkmultipliers': {'grassvalue': 1, 'grasslimit': 1, 'grassspawn': 1, 'expgain': 1, 'mowerspeed': 1},"perklevels": {'grassvalue': 0, 'grasslimit': 0, 'grassspawn': 0, 'expgain': 0, 'mowerspeed': 0}, "perkmax": {'grassvalue': 10000 * (tempprestiges + 1), 'grasslimit': 10 + ( 10 * (tempprestiges + 1)), 'grassspawn': 25 + ( 10 * (tempprestiges + 1)), 'expgain': 25 + ( 10 * (tempprestiges + 1)), 'mowerspeed': 10}, 'prestige': {'prestigeamount': tempprestiges, 'prestigemultiplier': tempprestigemultiplier},"mowercolor":mowerstats.mowercolor,"wheelcolor":mowerstats.wheelcolor,"handlecolor":mowerstats.handlecolor,"enginecolor":mowerstats.enginecolor}
                 localStorage.setItem('mowerstats', JSON.stringify(mowerstats))
                 window.location.reload()
             }
@@ -536,6 +580,22 @@
         var str = numb.toString().split(".");
         str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return str.join(".");
+    }
+    function changemowercolor(color) {
+        mowerstats.mowercolor = color;
+        localStorage.setItem('mowerstats',mowerstats)
+    }
+    function changewheelcolor(color) {
+        mowerstats.wheelcolor = color;
+        localStorage.setItem('mowerstats',mowerstats)
+    }
+    function changehandlecolor(color) {
+        mowerstats.handlecolor = color;
+        localStorage.setItem('mowerstats',mowerstats)
+    }
+    function changeenginecolor(color) {
+        mowerstats.enginecolor = color;
+        localStorage.setItem('mowerstats',mowerstats)
     }
     c.fillRect(0, 0, canvas.width, canvas.height)
     class Grass {
@@ -595,21 +655,21 @@
         }
 
         draw() {
-            c.fillStyle = "#232b2b"
+            c.fillStyle = mowerstats.enginecolor
             c.fillRect(this.position.x, this.position.y, this.width, this.height)
             //scythe
             c.fillStyle = mowerstats.mowercolor
             c.fillRect(this.scythebox.position.x, this.scythebox.position.y, this.scythebox.width, this.scythebox.height)
             //wheels
-            c.fillStyle = "black"
+            c.fillStyle = mowerstats.wheelcolor
             c.fillRect(this.wheels.rightwheel.position.x, this.wheels.rightwheel.position.y, this.wheels.rightwheel.width, this.wheels.rightwheel.height)
-            c.fillStyle = "black"
+            c.fillStyle = mowerstats.wheelcolor
             c.fillRect(this.wheels.leftwheel.position.x, this.wheels.leftwheel.position.y, this.wheels.leftwheel.width, this.wheels.leftwheel.height)
             //c.fillStyle = "blue"
             //c.fillRect(this.scythebox.trackposition.x,this.scythebox.trackposition.y,this.scythebox.width,this.scythebox.height)
             c.beginPath()
             c.lineWidth = 20
-            c.strokeStyle = "black"
+            c.strokeStyle = mowerstats.handlecolor
             if (lastkey === "d" || lastkey === "ArrowRight") {
                 //c.moveTo(this.position.x - 150, this.position.y - 150);
                 //c.lineTo(this.position.x + 10, this.position.y + 10);
@@ -629,6 +689,14 @@
                 c.lineTo(this.position.x + this.width * 2 + 150, this.position.y - 50);
                 c.stroke()
             }
+            c.lineWidth = 5
+            c.strokeStyle = mowerstats.wheelcolor
+            c.moveTo(this.position.x - this.width/2,this.position.y + this.height/2 + 25)
+            c.lineTo(this.position.x + (this.width * 1.5) ,this.position.y + this.height/2 + 25)
+            c.stroke();
+            c.moveTo(this.position.x - this.width/2,this.position.y + this.height/2 + 35)
+            c.lineTo(this.position.x + (this.width * 1.5) ,this.position.y + this.height/2 + 35)
+            c.stroke();
         }
 
         update() {
