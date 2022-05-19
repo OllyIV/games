@@ -158,8 +158,12 @@
             var cell = row.insertCell(celli);
             cell.style.height = "10px";
             cell.style.width = "10px";
-            cell.onclick = function() {colorChanger(this,brushsize)};
-            cell.onmousedown = function() {dragcolorChanger(this,coloring,brushsize)};
+            //cell.onclick = function() {colorChanger(this,brushsize)};
+            cell.onmousedown = function() {
+                dragcolorChanger(this,coloring,brushsize)
+                colorChanger(this,brushsize)
+            };
+            cell.onmouseover = function() {dragcolorChanger(this,coloring,brushsize)}
             cell.onmouseup = function() {colorChanger(this,brushsize)}
             cell.setAttribute("id",celli);
             cell.classList.add("cell");
