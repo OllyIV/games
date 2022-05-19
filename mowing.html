@@ -399,7 +399,7 @@
     $("#level").text("Level: " + mowerstats.level)
     $("#prestige").text("Prestige: " + mowerstats.prestige.prestigeamount)
     $("#perkpoints").text("Perk Points: " + mowerstats.perkpoints)
-    $("#levelreq").text(100 + mowerstats.prestige.prestigeamount * 25)
+    $("#levelreq").text(100 + mowerstats.prestige.prestigeamount * 35)
     for (var i in mowerstats.perklevels) {
         if (mowerstats.perklevels[[i]] === mowerstats.perkmax[[i]]) {
             $("#" + i + "perklevel").text("Level: " + mowerstats.perklevels[i] + " (Max)")
@@ -566,8 +566,8 @@
         //mowerstats.prestige.prestigeamount += 1
         //mowerstats.prestige.prestigemultiplier += mowerstats.level / 2
         try {
-            player.position.y = 0;
             if (mowerstats.level >= 100 + (mowerstats.prestige.prestigeamount * 35)) {
+                player.position.y = 0;
                 let tempprestigemultiplier = mowerstats.prestige.prestigemultiplier
                 if (tempprestigemultiplier == 1) {
                     tempprestigemultiplier += (mowerstats.level / 50) - 1
