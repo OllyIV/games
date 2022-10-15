@@ -73,7 +73,7 @@
     function countdown() {
         timeLeft--;
         if (timeLeft == 0) {
-            clearTimeout(timerId);
+            clearInterval(timerId);
             results();
         } else {
             elem.innerHTML = timeLeft + ' second(s) left!';
